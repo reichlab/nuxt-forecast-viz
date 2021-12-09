@@ -1,0 +1,9 @@
+{
+  "name": "nuxt-forecast-viz",
+  "version": "1.0.0",
+  "description": "Nuxt module for infectious disease forecast visualizations",
+  "main": "module.js",
+  "author": "Evan L. Ray",
+  "license": "MIT",
+  "private": false
+}
