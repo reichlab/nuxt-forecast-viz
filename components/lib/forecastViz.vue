@@ -141,7 +141,6 @@ export default {
   },
   methods: {
     keydown_handler: function(event) {
-      console.log(event.keyCode)
       if (event.keyCode == 37) {
         this.$forecastViz.decrement_as_of()
       } else if (event.keyCode == 39) {
@@ -150,7 +149,6 @@ export default {
     },
     handle_select_target_variable: function(val) {
       this.$forecastViz.set_target_var(val)
-      console.log(this.all_models)
       if(this.all_models) {
         this.$forecastViz.select_all_models()
       }

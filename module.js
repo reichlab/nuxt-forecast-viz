@@ -5,8 +5,8 @@ export default function(moduleOptions) {
   // assemble options passed in from nuxt.config.js in the project using the
   // nuxt-forecast-vis module
   const options = {
-    ...moduleOptions//,
-    // ...this.options.forecastViz
+    ...moduleOptions,
+    ...this.options.forecastViz
   }
 
   // add plugins for the forecastViz vue component, vuex store, and
@@ -28,9 +28,6 @@ export default function(moduleOptions) {
     src: resolve(__dirname, 'plugins/index.js'),
     fileName: 'forecastViz/plugins/index.js'
   })
-
-  console.log("in module.js, this is")
-  console.log(this)
 
   // sync all relevant files and folders to the nuxt build dir (.nuxt/)
   const foldersToSync = ['plugins/helpers', 'store/modules', 'components/lib']

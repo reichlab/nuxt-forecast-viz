@@ -25,9 +25,6 @@ export default moduleOptions => ({
   mutations: {
     async set_target_var(state, new_target_var) {
       state.target_var = new_target_var;
-      console.log("new target var:")
-      console.log(state.target_var)
-      console.log(this)
       await this.dispatch('forecastViz/fetch_current_truth');
       await this.dispatch('forecastViz/fetch_as_of_truth');
       await this.dispatch('forecastViz/fetch_forecasts')
@@ -67,9 +64,6 @@ export default moduleOptions => ({
       state.current_truth = new_truth;
     },
     set_as_of_truth(state, new_truth) {
-      console.log("in set_as_of_truth")
-      console.log(state)
-      console.log(new_truth)
       state.as_of_truth = new_truth;
     },
     set_forecasts(state, new_forecasts) {
@@ -106,11 +100,6 @@ export default moduleOptions => ({
   actions: {
     async fetch_current_truth({ commit, state }) {
       try {
-        // const target_path = `data/truth/${state.target_var}_${state.location}_${state.current_date}.json`;
-        console.log("fetch_current_truth")
-        console.log(moduleOptions)
-        console.log(moduleOptions.fetch_data)
-        // const data = await moduleOptions.fetch_data(target_path);
         const data = await this.dispatch('forecastViz_fetch_data',
           {
             is_forecast: false,
@@ -118,10 +107,7 @@ export default moduleOptions => ({
             location: state.location,
             ref_date: state.current_date
           });
-        console.log("current truth data:")
-        console.log(data)
         commit('set_current_truth', data);
-        console.log(state.current_truth)
       } catch (error) {
         commit('set_current_truth', []);
         console.log(error);
@@ -138,11 +124,7 @@ export default moduleOptions => ({
             location: state.location,
             ref_date: state.as_of_date
           });
-        console.log("fetch_as_of_truth")
-        console.log(data)
         commit('set_as_of_truth', data);
-        console.log(state)
-        console.log(state.as_of_truth)
       } catch (error) {
         commit('set_as_of_truth', []);
         console.log(error);
@@ -198,9 +180,6 @@ export default moduleOptions => ({
     },
     plot_data: (state) => {
       let pd = [];
-
-      console.log("in plot_data, state.data:")
-      console.log(state.data)
 
       if (state.data.includes('Current Truth')) {
         pd.push({
@@ -348,9 +327,6 @@ export default moduleOptions => ({
         },
       );
       pd = pd.concat(...pd1);
-
-      console.log("pd:")
-      console.log(pd)
 
       return pd;
     }

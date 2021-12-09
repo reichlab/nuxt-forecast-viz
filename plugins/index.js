@@ -115,8 +115,6 @@ class ForecastViz {
     // handle no store:
     if (!this.storeModuleExists()) return undefined
     // return the value from the store
-    console.log(this.store.getters['forecastViz/plot_layout'])
-    // return this.state['forecastViz'].plot_layout
     return this.store.getters['forecastViz/plot_layout']
   }
 
@@ -125,10 +123,7 @@ class ForecastViz {
     // handle no store:
     if (!this.storeModuleExists()) return undefined
     // return the value from the store
-    console.log("in plugins/index/plot_data, this.store is:")
-    console.log(this.store.getters['forecastViz/plot_data'])
     return this.store.getters['forecastViz/plot_data']
-    // return this.state['forecastViz'].plot_data
   }
 
 

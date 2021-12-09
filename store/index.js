@@ -4,7 +4,6 @@ import forecastViz from './modules/forecastViz'
 // create the plugin
 export default ({ store }, inject) => {
   // get the options out using lodash templates
-  // const options = `<%= serialize(options) %>`
   const options = <%= serialize(options) %>
 
   // register the module using forecastViz as the name.
