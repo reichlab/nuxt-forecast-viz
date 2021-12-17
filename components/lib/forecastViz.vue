@@ -230,7 +230,7 @@ html,body{
   text-align:center;
   margin-left: 3%;
   margin-right: 3%;
-  font-size: 12px
+  font-size: 18px
 }
 
 .var{
