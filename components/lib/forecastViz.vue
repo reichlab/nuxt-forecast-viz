@@ -212,7 +212,7 @@ body,
 #__nuxt,
 #__layout,
 #__layout > div,
-#app {
+#vizualisation {
   width: 100% !important;
   margin: 0;
 }
