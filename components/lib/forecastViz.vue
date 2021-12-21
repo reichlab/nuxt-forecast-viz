@@ -35,9 +35,9 @@
 
           <label for = "data">Select Truth Data:</label>
           <div class="form-group form-check select_data ">
-            <input type="checkbox" :id="data1[0]" :value="data1[0]" checked @click="handle_data(data1[0],0)" >&nbsp; Current ({{current_date}}) &nbsp;<span class="dot" style="background-color: lightgrey; "></span>&nbsp;&nbsp;&nbsp;
+            <input type="checkbox" id="Current Truth" value="Current Truth" checked @click="handle_data(truths[0],0)" >&nbsp; Current ({{current_date}}) &nbsp;<span class="dot" style="background-color: lightgrey; "></span>&nbsp;&nbsp;&nbsp;
             <br>
-            <input type="checkbox" :id="data1[1]" :value="data1[1]" checked @click="handle_data(data1[1],1)">&nbsp; As of {{as_of_date}}&nbsp;<span class="dot" style="background-color: black;"></span>
+            <input type="checkbox" id="Truth as Of" value="Truth as Of" checked @click="handle_data(truths[1],1)">&nbsp; As of {{as_of_date}}&nbsp;<span class="dot" style="background-color: black;"></span>
           </div>
           <button type="button" class="btn xwwbtn-outline-dark btn-sm rounded-pill" style="float: right;" @click="shuffle_colours()">Shuffle Colours</button>
           <label class="label" for = "model">Select Models:</label>
@@ -91,10 +91,7 @@ export default {
   // },
   data() {
     return {
-      data1:['Current Truth', 'Truth As Of'],
-      selected_target_variable: 'death',
-      selected_location: 'US',
-      selected_interval:'95%',
+      truths:['Current Truth', 'Truth As Of'],
       plot_style: {
         width: "100%",
         height:"72vh"
@@ -105,11 +102,20 @@ export default {
     target_variables () {
       return this.$forecastViz.target_variables()
     },
+    selected_target_variable(){
+      return this.$forecastViz.selected_target_variable()
+    },
     locations () {
       return this.$forecastViz.locations()
     },
+    selected_location(){
+      return this.$forecastViz.selected_location()
+    },
     intervals () {
       return this.$forecastViz.intervals()
+    },
+    selected_interval(){
+      return this.$forecastViz.selected_interval()
     },
     current_date() {
       return this.$forecastViz.current_date()

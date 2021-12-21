@@ -154,8 +154,11 @@ export default moduleOptions => ({
   },
   getters: {
     target_variables: (state) => state.target_variables,
+    selected_target_variable: (state) => state.target_var,
     locations: (state) => state.locations,
+    selected_location: (state) => state.location,
     intervals: (state) => state.intervals,
+    selected_interval: (state) => state.interval,
     models: (state) => state.models,
     colours: (state) => state.colours,
     data: (state) => state.data,
