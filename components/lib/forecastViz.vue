@@ -47,10 +47,10 @@
             <div class="form-group form-check" style="min-height:0px; margin-bottom: 5px" v-for="(item, index) in models" v-bind:key="index" >
               <div v-if="forecasts.hasOwnProperty(item)" v-bind:key="forecasts">
                 <div v-if="current_models.includes(item)" v-bind:key="current_models">
-                  <label><input type="checkbox" :id="item" :value="item" @click="handle_models(item,index)" checked>&nbsp; {{item}}&nbsp;<span class="dot" v-bind:style="{ backgroundColor: colours[index]}"></span></label>
+                  <label><input type="checkbox" :id="item" :value="item" @click="handle_models(item,index)" checked>&nbsp; {{item}}&nbsp;<span class="dot" v-bind:style="{ backgroundColor: colours[index%10]}"></span></label>
                 </div>
                 <div v-else v-bind:key="current_models">
-                  <label><input type="checkbox" :id="item" :value="item" @click="handle_models(item,index)" >&nbsp; {{item}}&nbsp;<span class="dot" v-bind:style="{ backgroundColor: colours[index]}"></span></label>
+                  <label><input type="checkbox" :id="item" :value="item" @click="handle_models(item,index)" >&nbsp; {{item}}&nbsp;<span class="dot" style="backgroundColor: grey"></span></label>
                 </div>
               </div>
               <div v-else style="margin:0, padding:0">
@@ -58,7 +58,7 @@
             </div>
             <div class="form-group form-check" style="min-height:0px; margin-bottom: 5px" v-for="(item, index) in models" v-bind:key="index+100" >
               <div v-if="!forecasts.hasOwnProperty(item)" style="color: lightgrey">
-                <label><input type="checkbox" disabled="disabled">&nbsp; {{item}}&nbsp;<span class="dot" v-bind:style="{ backgroundColor: colours[index]}"></span></label>
+                <label><input type="checkbox" disabled="disabled">&nbsp; {{item}}&nbsp;<span class="dot" style="backgroundColor: grey"></span></label>
               </div>
             </div>
           </div>
