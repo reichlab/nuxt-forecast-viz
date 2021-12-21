@@ -20,7 +20,8 @@ export default moduleOptions => ({
     default_models: moduleOptions.default_models,
     data: ['Current Truth', 'Truth As Of'],
     colours: ['#0d0887', '#46039f', '#7201a8', '#9c179e', '#bd3786', '#d8576b', '#ed7953', '#fb9f3a', '#fdca26', '#f0f921', '#0d0887', '#46039f', '#7201a8', '#9c179e', '#bd3786', '#d8576b', '#ed7953', '#fb9f3a', '#fdca26', '#f0f921', '#0d0887', '#46039f', '#7201a8', '#9c179e', '#bd3786', '#d8576b', '#ed7953', '#fb9f3a', '#fdca26', '#f0f921', '#0d0887', '#46039f', '#7201a8', '#9c179e', '#bd3786', '#d8576b', '#ed7953', '#fb9f3a', '#fdca26', '#f0f921', '#0d0887', '#46039f', '#7201a8', '#9c179e', '#bd3786', '#d8576b', '#ed7953', '#fb9f3a', '#fdca26', '#f0f921', '#0d0887', '#46039f', '#7201a8', '#9c179e', '#bd3786', '#d8576b', '#ed7953', '#fb9f3a', '#fdca26', '#f0f921', '#0d0887', '#46039f', '#7201a8', '#9c179e', '#bd3786', '#d8576b', '#ed7953', '#fb9f3a', '#fdca26', '#f0f921', '#0d0887', '#46039f', '#7201a8', '#9c179e', '#bd3786', '#d8576b', '#ed7953', '#fb9f3a', '#fdca26', '#f0f921'],
-    all_models: moduleOptions.all_models
+    all_models: moduleOptions.all_models,
+    disclaimer: moduleOptions.all_models || 'Most forecasts have failed to reliably predict rapid changes in the trends of reported cases and hospitalizations. Due to this limitation, they should not be relied upon for decisions about the possibility or timing of rapid changes in trends.'
   }),
   mutations: {
     async set_target_var(state, new_target_var) {
@@ -162,6 +163,7 @@ export default moduleOptions => ({
     forecasts: (state) => state.forecasts,
     current_date: (state) => state.current_date,
     truth_as_of: (state) => state.as_of_date,
+    disclaimer: (state) => state.disclaimer,
     all_models: (state) => state.all_models,
     plot_layout: (state) => {
       const variable = state.target_variables.filter((obj) => obj.value === state.target_var)[0].plot_text;

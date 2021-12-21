@@ -66,7 +66,7 @@
 
         <div id="viz" class="col-md-9">
           <p class="disclaimer" >
-            <b>Most forecasts have failed to reliably predict rapid changes in the trends of reported cases and hospitalizations. Due to this limitation, they should not be relied upon for decisions about the possibility or timing of rapid changes in trends.</b>
+            <b>{{disclaimer}}</b>
           </p>
           <client-only>
             <vue-plotly :data="plot_data" :layout="plot_layout" :style="plot_style"></vue-plotly>
@@ -131,6 +131,9 @@ export default {
     },
     plot_layout() {
       return this.$forecastViz.plot_layout()
+    },
+    disclaimer () {
+      return this.$forecastViz.disclaimer()
     },
     colours() {
       return this.$forecastViz.colours()

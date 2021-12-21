@@ -89,6 +89,8 @@ export default {
         // initial value for the all_models checkbox.
         // I think this is not actually currently used.
         all_models: false
+        // A disclaimer about the predictions. Switches to the default one if not provided.
+        disclaimer: 'Your disclaimer here'
       }
     ]
   ],
