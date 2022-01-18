@@ -23,6 +23,34 @@ export const target_variables = ({ state }) => {
   return state['forecastViz'].target_variables
 }
 
+export const target_var = ({ state }) => {
+  // handle no store:
+  if (!storeModuleExists({ state })) return undefined
+  // return the counter vale from the store
+  return state['forecastViz'].target_var
+}
+
+export const selected_location = ({ state }) => {
+  // handle no store:
+  if (!storeModuleExists({ state })) return undefined
+  // return the counter vale from the store
+  return state['forecastViz'].selected_location
+}
+
+export const selected_interval = ({ state }) => {
+  // handle no store:
+  if (!storeModuleExists({ state })) return undefined
+  // return the counter vale from the store
+  return state['forecastViz'].selected_interval
+}
+ 
+export const disclaimer = ({ state }) => {
+  // handle no store:
+  if (!storeModuleExists({ state })) return undefined
+  // return the counter vale from the store
+  return state['forecastViz'].disclaimer
+}
+
 // function to return the locations
 export const locations = ({ state }) => {
   // handle no store:

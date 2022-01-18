@@ -7,7 +7,7 @@
             <div class="row var">
               <label for = "target_variable" class="col-md-5">Outcome:</label>
               <b-form-select name = "target_variable"
-                            v-model="selected_target_variable"
+                            v-model="target_var"
                             :options="target_variables"
                             @change="handle_select_target_variable"
                             class="col-md-7">
@@ -46,10 +46,10 @@
           <div id="select_model" v-bind:key="current_models">
             <div class="form-group form-check" style="min-height:0px; margin-bottom: 5px" v-for="(item, index) in models" v-bind:key="index" >
               <div v-if="forecasts.hasOwnProperty(item)" v-bind:key="forecasts">
-                <div v-if="current_models.includes(item)" v-bind:key="current_models">
+                <div v-if="current_models.includes(item)" >
                   <label><input type="checkbox" :id="item" :value="item" @click="handle_models(item,index)" checked>&nbsp; {{item}}&nbsp;<span class="dot" v-bind:style="{ backgroundColor: colours[index]}"></span></label>
                 </div>
-                <div v-else v-bind:key="current_models">
+                <div v-else >
                   <label><input type="checkbox" :id="item" :value="item" @click="handle_models(item,index)" >&nbsp; {{item}}&nbsp;<span class="dot" v-bind:style="{ backgroundColor: colours[index]}"></span></label>
                 </div>
               </div>
@@ -71,6 +71,12 @@
           <client-only>
             <vue-plotly :data="plot_data" :layout="plot_layout" :style="plot_style"></vue-plotly>
           </client-only>
+          <div class="container">
+        <div class="col-md-12 text-center">
+            <button type="button" class="btn btn-primary" @click="key_press(0)">&lt;</button>
+            <button type="button" class="btn btn-primary" @click="key_press(1)">&gt;</button>
+        </div>
+    </div>
           <p style="text-align:center">
             <small>Note: You can navigate to forecasts from previous weeks with the left and right arrow keys</small>
           </p>
@@ -101,8 +107,8 @@ export default {
     target_variables () {
       return this.$forecastViz.target_variables()
     },
-    selected_target_variable(){
-      return this.$forecastViz.selected_target_variable()
+    target_var(){
+      return this.$forecastViz.target_var()
     },
     locations () {
       return this.$forecastViz.locations()
@@ -152,6 +158,13 @@ export default {
       if (event.keyCode == 37) {
         this.$forecastViz.decrement_as_of()
       } else if (event.keyCode == 39) {
+        this.$forecastViz.increment_as_of()
+      }
+    },
+    key_press: function(val) {
+      if (val == 0) {
+        this.$forecastViz.decrement_as_of()
+      } else if (val == 1) {
         this.$forecastViz.increment_as_of()
       }
     },

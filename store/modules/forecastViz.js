@@ -4,7 +4,7 @@ export default moduleOptions => ({
   namespaced: true,
   state: () => ({
     target_variables: moduleOptions.target_variables,
-    target_var: moduleOptions.init_target_var,
+    target_var: moduleOptions.target_var,
     locations: moduleOptions.locations,
     location: moduleOptions.init_location,
     intervals: moduleOptions.intervals,
@@ -19,7 +19,7 @@ export default moduleOptions => ({
     current_models: moduleOptions.default_models,
     default_models: moduleOptions.default_models,
     data: ['Current Truth', 'Truth As Of'],
-    colours: ['#0d0887', '#46039f', '#7201a8', '#9c179e', '#bd3786', '#d8576b', '#ed7953', '#fb9f3a', '#fdca26', '#f0f921']*(((moduleOptions.models.length)/10)+1),
+    colours: Array(parseInt((moduleOptions.models.length)/10, 10)+1).fill(['#0d0887', '#46039f', '#7201a8', '#9c179e', '#bd3786', '#d8576b', '#ed7953', '#fb9f3a', '#fdca26', '#f0f921']).flat(),
     all_models: moduleOptions.all_models,
     disclaimer: moduleOptions.all_models || ''
   }),
@@ -154,7 +154,10 @@ export default moduleOptions => ({
   },
   getters: {
     target_variables: (state) => state.target_variables,
-    selected_target_variable: (state) => state.target_var,
+    target_var: (state) => {
+      console.log("Here")
+      return state.target_var
+    },
     locations: (state) => state.locations,
     selected_location: (state) => state.location,
     intervals: (state) => state.intervals,
@@ -176,10 +179,10 @@ export default moduleOptions => ({
         showlegend: false,
         title: { text: `Forecasts of ${variable} in ${location} as of ${state.as_of_date}` },
         xaxis: {
-          title: { text: 'Date' },
+          title: { text: 'Date'  },
         },
         yaxis: {
-          title: { text: variable },
+          title: { text: variable , hoverformat: '.2f'},
         },
       };
     },
