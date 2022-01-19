@@ -19,8 +19,9 @@ export default moduleOptions => ({
     current_models: moduleOptions.default_models,
     default_models: moduleOptions.default_models,
     data: ['Current Truth', 'Truth As Of'],
-    colours: ['#0d0887', '#46039f', '#7201a8', '#9c179e', '#bd3786', '#d8576b', '#ed7953', '#fb9f3a', '#fdca26', '#f0f921', '#0d0887', '#46039f', '#7201a8', '#9c179e', '#bd3786', '#d8576b', '#ed7953', '#fb9f3a', '#fdca26', '#f0f921', '#0d0887', '#46039f', '#7201a8', '#9c179e', '#bd3786', '#d8576b', '#ed7953', '#fb9f3a', '#fdca26', '#f0f921', '#0d0887', '#46039f', '#7201a8', '#9c179e', '#bd3786', '#d8576b', '#ed7953', '#fb9f3a', '#fdca26', '#f0f921', '#0d0887', '#46039f', '#7201a8', '#9c179e', '#bd3786', '#d8576b', '#ed7953', '#fb9f3a', '#fdca26', '#f0f921', '#0d0887', '#46039f', '#7201a8', '#9c179e', '#bd3786', '#d8576b', '#ed7953', '#fb9f3a', '#fdca26', '#f0f921', '#0d0887', '#46039f', '#7201a8', '#9c179e', '#bd3786', '#d8576b', '#ed7953', '#fb9f3a', '#fdca26', '#f0f921', '#0d0887', '#46039f', '#7201a8', '#9c179e', '#bd3786', '#d8576b', '#ed7953', '#fb9f3a', '#fdca26', '#f0f921'],
-    all_models: moduleOptions.all_models
+    colours: Array(parseInt((moduleOptions.models.length)/10, 10)+1).fill(['#0d0887', '#46039f', '#7201a8', '#9c179e', '#bd3786', '#d8576b', '#ed7953', '#fb9f3a', '#fdca26', '#f0f921']).flat(),
+    all_models: moduleOptions.all_models,
+    disclaimer: moduleOptions.all_models || ''
   }),
   mutations: {
     async set_target_var(state, new_target_var) {
@@ -153,8 +154,11 @@ export default moduleOptions => ({
   },
   getters: {
     target_variables: (state) => state.target_variables,
+    target_var: (state) => state.target_var,
     locations: (state) => state.locations,
+    location: (state) => state.location,
     intervals: (state) => state.intervals,
+    interval: (state) => state.interval,
     models: (state) => state.models,
     colours: (state) => state.colours,
     data: (state) => state.data,
@@ -162,6 +166,7 @@ export default moduleOptions => ({
     forecasts: (state) => state.forecasts,
     current_date: (state) => state.current_date,
     truth_as_of: (state) => state.as_of_date,
+    disclaimer: (state) => state.disclaimer,
     all_models: (state) => state.all_models,
     plot_layout: (state) => {
       const variable = state.target_variables.filter((obj) => obj.value === state.target_var)[0].plot_text;
@@ -171,10 +176,10 @@ export default moduleOptions => ({
         showlegend: false,
         title: { text: `Forecasts of ${variable} in ${location} as of ${state.as_of_date}` },
         xaxis: {
-          title: { text: 'Date' },
+          title: { text: 'Date'  },
         },
         yaxis: {
-          title: { text: variable },
+          title: { text: variable , hoverformat: '.2f'},
         },
       };
     },

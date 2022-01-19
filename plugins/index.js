@@ -30,6 +30,35 @@ class ForecastViz {
     return this.state['forecastViz'].target_variables
   }
 
+  target_var () {
+    // handle no store:
+    if (!this.storeModuleExists()) return undefined
+    // return the value from the store
+    return this.state['forecastViz'].target_var
+  }
+
+  location () {
+    // handle no store:
+    if (!this.storeModuleExists()) return undefined
+    // return the value from the store
+    return this.state['forecastViz'].location
+  }
+
+  interval () {
+    // handle no store:
+    if (!this.storeModuleExists()) return undefined
+    // return the value from the store
+    return this.state['forecastViz'].interval
+  }
+
+  disclaimer () {
+    // handle no store:
+    if (!this.storeModuleExists()) return undefined
+    // return the value from the store
+    return this.state['forecastViz'].disclaimer
+  }
+
+
   // function to return the locations
   locations () {
     // handle no store:
