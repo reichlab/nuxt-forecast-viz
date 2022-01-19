@@ -154,10 +154,7 @@ export default moduleOptions => ({
   },
   getters: {
     target_variables: (state) => state.target_variables,
-    target_var: (state) => {
-      console.log("Here")
-      return state.target_var
-    },
+    target_var: (state) => state.target_var,
     locations: (state) => state.locations,
     location: (state) => state.location,
     intervals: (state) => state.intervals,
