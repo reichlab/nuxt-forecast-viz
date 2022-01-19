@@ -30,18 +30,18 @@ export const target_var = ({ state }) => {
   return state['forecastViz'].target_var
 }
 
-export const selected_location = ({ state }) => {
+export const location = ({ state }) => {
   // handle no store:
   if (!storeModuleExists({ state })) return undefined
   // return the counter vale from the store
-  return state['forecastViz'].selected_location
+  return state['forecastViz'].location
 }
 
-export const selected_interval = ({ state }) => {
+export const interval = ({ state }) => {
   // handle no store:
   if (!storeModuleExists({ state })) return undefined
   // return the counter vale from the store
-  return state['forecastViz'].selected_interval
+  return state['forecastViz'].interval
 }
  
 export const disclaimer = ({ state }) => {

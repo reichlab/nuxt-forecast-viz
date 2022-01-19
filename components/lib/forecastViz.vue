@@ -16,7 +16,7 @@
             <div class="row var">
               <label for = "location" class="col-md-5">Location:</label>
               <b-form-select name = "location"
-                            v-model="selected_location"
+                            v-model="location"
                             :options="locations"
                             @change="handle_select_location"
                             class="col-md-7">
@@ -25,7 +25,7 @@
             <div class="row var">
               <label for = "interval" class="col-md-5">Interval:</label>
               <b-form-select name = "interval"
-                            v-model="selected_interval"
+                            v-model="interval"
                             :options="intervals"
                             @change="handle_select_interval"
                             class="col-md-7">
@@ -113,14 +113,14 @@ export default {
     locations () {
       return this.$forecastViz.locations()
     },
-    selected_location(){
-      return this.$forecastViz.selected_location()
+    location(){
+      return this.$forecastViz.location()
     },
     intervals () {
       return this.$forecastViz.intervals()
     },
-    selected_interval(){
-      return this.$forecastViz.selected_interval()
+    interval(){
+      return this.$forecastViz.interval()
     },
     current_date() {
       return this.$forecastViz.current_date()

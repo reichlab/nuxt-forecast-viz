@@ -37,18 +37,18 @@ class ForecastViz {
     return this.state['forecastViz'].target_var
   }
 
-  selected_location () {
+  location () {
     // handle no store:
     if (!this.storeModuleExists()) return undefined
     // return the value from the store
-    return this.state['forecastViz'].selected_location
+    return this.state['forecastViz'].location
   }
 
-  selected_interval () {
+  interval () {
     // handle no store:
     if (!this.storeModuleExists()) return undefined
     // return the value from the store
-    return this.state['forecastViz'].selected_interval
+    return this.state['forecastViz'].interval
   }
 
   disclaimer () {

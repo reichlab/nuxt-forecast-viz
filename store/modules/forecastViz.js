@@ -4,7 +4,7 @@ export default moduleOptions => ({
   namespaced: true,
   state: () => ({
     target_variables: moduleOptions.target_variables,
-    target_var: moduleOptions.target_var,
+    target_var: moduleOptions.init_target_var,
     locations: moduleOptions.locations,
     location: moduleOptions.init_location,
     intervals: moduleOptions.intervals,
@@ -159,9 +159,9 @@ export default moduleOptions => ({
       return state.target_var
     },
     locations: (state) => state.locations,
-    selected_location: (state) => state.location,
+    location: (state) => state.location,
     intervals: (state) => state.intervals,
-    selected_interval: (state) => state.interval,
+    interval: (state) => state.interval,
     models: (state) => state.models,
     colours: (state) => state.colours,
     data: (state) => state.data,
