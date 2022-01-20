@@ -10,7 +10,6 @@ export default function(moduleOptions) {
   }
 
   if (!options.disclaimer) options.disclaimer = ''
-  const { disclaimer } = options
   // add plugins for the forecastViz vue component, vuex store, and
   // plugin providing functions to access the store
   //  - src is the current location of the file relative to module.js
