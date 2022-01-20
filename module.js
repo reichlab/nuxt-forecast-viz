@@ -32,7 +32,7 @@ export default function(moduleOptions) {
   })
 
   // sync all relevant files and folders to the nuxt build dir (.nuxt/)
-  const foldersToSync = ['plugins/helpers', 'store/modules', 'components/lib']
+  const foldersToSync = ['store/modules', 'components/lib']
   for (const pathString of foldersToSync) {
     const path = resolve(__dirname, pathString)
     for (const file of readdirSync(path)) {

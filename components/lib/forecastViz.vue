@@ -7,7 +7,7 @@
             <div class="row var">
               <label for = "target_variable" class="col-md-5">Outcome:</label>
               <b-form-select name = "target_variable"
-                            v-model="selected_target_variable"
+                            v-model="target_var"
                             :options="target_variables"
                             @change="handle_select_target_variable"
                             class="col-md-7">
@@ -16,7 +16,7 @@
             <div class="row var">
               <label for = "location" class="col-md-5">Location:</label>
               <b-form-select name = "location"
-                            v-model="selected_location"
+                            v-model="location"
                             :options="locations"
                             @change="handle_select_location"
                             class="col-md-7">
@@ -25,7 +25,7 @@
             <div class="row var">
               <label for = "interval" class="col-md-5">Interval:</label>
               <b-form-select name = "interval"
-                            v-model="selected_interval"
+                            v-model="interval"
                             :options="intervals"
                             @change="handle_select_interval"
                             class="col-md-7">
@@ -35,9 +35,9 @@
 
           <label for = "data">Select Truth Data:</label>
           <div class="form-group form-check select_data ">
-            <input type="checkbox" :id="data1[0]" :value="data1[0]" checked @click="handle_data(data1[0],0)" >&nbsp; Current ({{current_date}}) &nbsp;<span class="dot" style="background-color: lightgrey; "></span>&nbsp;&nbsp;&nbsp;
+            <input type="checkbox" id="Current Truth" value="Current Truth" checked @click="handle_data('Current Truth',0)" >&nbsp; Current ({{current_date}}) &nbsp;<span class="dot" style="background-color: lightgrey; "></span>&nbsp;&nbsp;&nbsp;
             <br>
-            <input type="checkbox" :id="data1[1]" :value="data1[1]" checked @click="handle_data(data1[1],1)">&nbsp; As of {{as_of_date}}&nbsp;<span class="dot" style="background-color: black;"></span>
+            <input type="checkbox" id="Truth as Of" value="Truth as Of" checked @click="handle_data('Truth as Of',1)">&nbsp; As of {{as_of_date}}&nbsp;<span class="dot" style="background-color: black;"></span>
           </div>
           <button type="button" class="btn xwwbtn-outline-dark btn-sm rounded-pill" style="float: right;" @click="shuffle_colours()">Shuffle Colours</button>
           <label class="label" for = "model">Select Models:</label>
@@ -46,10 +46,10 @@
           <div id="select_model" v-bind:key="current_models">
             <div class="form-group form-check" style="min-height:0px; margin-bottom: 5px" v-for="(item, index) in models" v-bind:key="index" >
               <div v-if="forecasts.hasOwnProperty(item)" v-bind:key="forecasts">
-                <div v-if="current_models.includes(item)" v-bind:key="current_models">
+                <div v-if="current_models.includes(item)" >
                   <label><input type="checkbox" :id="item" :value="item" @click="handle_models(item,index)" checked>&nbsp; {{item}}&nbsp;<span class="dot" v-bind:style="{ backgroundColor: colours[index]}"></span></label>
                 </div>
-                <div v-else v-bind:key="current_models">
+                <div v-else >
                   <label><input type="checkbox" :id="item" :value="item" @click="handle_models(item,index)" >&nbsp; {{item}}&nbsp;<span class="dot" v-bind:style="{ backgroundColor: colours[index]}"></span></label>
                 </div>
               </div>
@@ -58,7 +58,7 @@
             </div>
             <div class="form-group form-check" style="min-height:0px; margin-bottom: 5px" v-for="(item, index) in models" v-bind:key="index+100" >
               <div v-if="!forecasts.hasOwnProperty(item)" style="color: lightgrey">
-                <label><input type="checkbox" disabled="disabled">&nbsp; {{item}}&nbsp;<span class="dot" v-bind:style="{ backgroundColor: colours[index]}"></span></label>
+                <label><input type="checkbox" disabled="disabled">&nbsp; {{item}}&nbsp;<span class="dot" style="backgroundColor: grey"></span></label>
               </div>
             </div>
           </div>
@@ -66,11 +66,17 @@
 
         <div id="viz" class="col-md-9">
           <p class="disclaimer" >
-            <b>Most forecasts have failed to reliably predict rapid changes in the trends of reported cases and hospitalizations. Due to this limitation, they should not be relied upon for decisions about the possibility or timing of rapid changes in trends.</b>
+            <b>{{disclaimer}}</b>
           </p>
           <client-only>
             <vue-plotly :data="plot_data" :layout="plot_layout" :style="plot_style"></vue-plotly>
           </client-only>
+          <div class="container">
+        <div class="col-md-12 text-center">
+            <button type="button" class="btn btn-primary" @click="key_press(0)">&lt;</button>
+            <button type="button" class="btn btn-primary" @click="key_press(1)">&gt;</button>
+        </div>
+    </div>
           <p style="text-align:center">
             <small>Note: You can navigate to forecasts from previous weeks with the left and right arrow keys</small>
           </p>
@@ -91,10 +97,6 @@ export default {
   // },
   data() {
     return {
-      data1:['Current Truth', 'Truth As Of'],
-      selected_target_variable: 'death',
-      selected_location: 'US',
-      selected_interval:'95%',
       plot_style: {
         width: "100%",
         height:"72vh"
@@ -105,11 +107,20 @@ export default {
     target_variables () {
       return this.$forecastViz.target_variables()
     },
+    target_var(){
+      return this.$forecastViz.target_var()
+    },
     locations () {
       return this.$forecastViz.locations()
     },
+    location(){
+      return this.$forecastViz.location()
+    },
     intervals () {
       return this.$forecastViz.intervals()
+    },
+    interval(){
+      return this.$forecastViz.interval()
     },
     current_date() {
       return this.$forecastViz.current_date()
@@ -132,6 +143,9 @@ export default {
     plot_layout() {
       return this.$forecastViz.plot_layout()
     },
+    disclaimer () {
+      return this.$forecastViz.disclaimer()
+    },
     colours() {
       return this.$forecastViz.colours()
     },
@@ -144,6 +158,13 @@ export default {
       if (event.keyCode == 37) {
         this.$forecastViz.decrement_as_of()
       } else if (event.keyCode == 39) {
+        this.$forecastViz.increment_as_of()
+      }
+    },
+    key_press: function(val) {
+      if (val == 0) {
+        this.$forecastViz.decrement_as_of()
+      } else if (val == 1) {
         this.$forecastViz.increment_as_of()
       }
     },
@@ -204,12 +225,8 @@ export default {
 </script>
 
 <style>
-html,
-body,
-#__nuxt,
-#__layout,
-#__layout > div,
-#app {
+
+#vizualisation {
   width: 100% !important;
   margin: 0;
 }
