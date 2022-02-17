@@ -187,6 +187,7 @@ export default moduleOptions => ({
       let pd = [];
 
       if (state.data.includes('Current Truth')) {
+        if (state.current_truth.length){
         pd.push({
           x: state.current_truth.date,
           y: state.current_truth.y,
@@ -197,8 +198,10 @@ export default moduleOptions => ({
             color: 'darkgray',
           },
         });
+       }
       }
       if (state.data.includes('Truth As Of')) {
+      if (state.as_of_truth.length){
         pd.push({
           x: state.as_of_truth.date,
           y: state.as_of_truth.y,
@@ -211,7 +214,10 @@ export default moduleOptions => ({
           },
         });
       }
-      const pd0 = Object.keys(state.forecasts).map(
+    }
+    let pd0 = []
+    if(state.forecasts.length){
+       pd0 = Object.keys(state.forecasts).map(
         (model) => {
           if (state.current_models.includes(model)) {
             const index = state.models.indexOf(model);
@@ -266,9 +272,12 @@ export default moduleOptions => ({
           return [];
         },
       );
-
+      }
       pd = pd.concat(...pd0);
-      const pd1 = Object.keys(state.forecasts).map(
+      
+      let pd1 = []
+      if(state.forecasts.length){
+       pd1 = Object.keys(state.forecasts).map(
         (model) => {
           if (state.current_models.includes(model)) {
             const index = state.models.indexOf(model);
@@ -300,9 +309,9 @@ export default moduleOptions => ({
               return [plot_line]
             }
 
-            var x = state.as_of_truth.date.slice(-1).concat(model_forecasts.target_end_date)
-            var y1 = state.as_of_truth.y.slice(-1).concat(model_forecasts[lower_quantile])
-            var y2 =  state.as_of_truth.y.slice(-1).concat(model_forecasts[upper_quantile])
+            var x =  (model_forecasts.target_end_date)
+            var y1 = (model_forecasts[lower_quantile])
+            var y2 = (model_forecasts[upper_quantile])
 
             return [
               plot_line,
@@ -331,6 +340,7 @@ export default moduleOptions => ({
           return [];
         },
       );
+      }
       pd = pd.concat(...pd1);
 
       return pd;
