@@ -185,7 +185,6 @@ export default moduleOptions => ({
     },
     plot_data: (state) => {
       let pd = [];
-
       if (state.data.includes('Current Truth')) {
         if (state.current_truth.length){
         pd.push({
@@ -228,7 +227,6 @@ export default moduleOptions => ({
             var mid = model_forecasts["q0.5"]
             var uq1 = model_forecasts["q0.75"]
             var uq2 = model_forecasts["q0.975"]
-
             //1) combine the arrays:
             var list = [];
             for (var j = 0; j < date.length; j++) 
@@ -238,14 +236,12 @@ export default moduleOptions => ({
                          'uq1': uq1[j],
                          'uq2': uq2[j],
                          'mid': mid[j] });
-
             //2) sort:
             list.sort(function(a, b) {
               return ((moment(a.date).isBefore(b.date)) ? -1  : 1);
               //Sort could be modified to, for example, sort on the age 
               // if the name is the same.
             });
-
             //3) separate them back out:
             for (var k = 0; k < list.length; k++) {
               model_forecasts.target_end_date[k] = list[k].date;
@@ -255,11 +251,9 @@ export default moduleOptions => ({
               model_forecasts["q0.75"][k] = list[k].uq1;
               model_forecasts["q0.975"][k] = list[k].uq2;
             }
-
             return ({
               x: [state.as_of_truth.date.slice(-1)[0],model_forecasts.target_end_date.slice(0)[0]],
               y: [state.as_of_truth.y.slice(-1)[0], model_forecasts['q0.5'].slice(0)[0]],
-
               mode: 'lines',
               type: 'scatter',
               name: model,
@@ -267,14 +261,13 @@ export default moduleOptions => ({
               opacity: 0.7,
               line: { color: state.colours[index] },
               hoverinfo:'none'
-            });
-          }
+              });
+            }
           return [];
-        },
-      );
+          },
+        );
       }
       pd = pd.concat(...pd0);
-      
       let pd1 = []
       if(state.forecasts.length){
        pd1 = Object.keys(state.forecasts).map(
@@ -296,7 +289,6 @@ export default moduleOptions => ({
               mode: mode,
               line: { color: state.colours[index] },
             };
-
             if (state.interval === '50%') {
               lower_quantile = 'q0.25';
               upper_quantile = 'q0.75';
@@ -308,10 +300,9 @@ export default moduleOptions => ({
             else{
               return [plot_line]
             }
-
-            var x =  (model_forecasts.target_end_date)
-            var y1 = (model_forecasts[lower_quantile])
-            var y2 = (model_forecasts[upper_quantile])
+            var x = state.as_of_truth.date.slice(-1).concat(model_forecasts.target_end_date)
+            var y1 = state.as_of_truth.y.slice(-1).concat(model_forecasts[lower_quantile])
+            var y2 =  state.as_of_truth.y.slice(-1).concat(model_forecasts[upper_quantile])
 
             return [
               plot_line,
@@ -336,13 +327,11 @@ export default moduleOptions => ({
               },
             ];
           }
-
           return [];
-        },
-      );
+          },
+        );
       }
       pd = pd.concat(...pd1);
-
       return pd;
     }
   }
