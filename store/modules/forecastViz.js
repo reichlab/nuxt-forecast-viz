@@ -21,7 +21,10 @@ export default moduleOptions => ({
     data: ['Current Truth', 'Truth As Of'],
     colours: Array(parseInt((moduleOptions.models.length)/10, 10)+1).fill(['#0d0887', '#46039f', '#7201a8', '#9c179e', '#bd3786', '#d8576b', '#ed7953', '#fb9f3a', '#fdca26', '#f0f921']).flat(),
     all_models: moduleOptions.all_models,
-    disclaimer: moduleOptions.disclaimer || ''
+    disclaimer: moduleOptions.disclaimer || '',
+    temp_current_truth: [],
+    temp_as_of_truth: [],
+    temp_forecasts: {},
   }),
   mutations: {
     async set_target_var(state, new_target_var) {
@@ -32,6 +35,9 @@ export default moduleOptions => ({
       if (state.all_models === true) {
         await this.dispatch('forecastViz/update_models')
       }
+      state.current_truth = state.temp_current_truth
+      state.as_of_truth = state.temp_as_of_truth
+      state.forecasts = state.temp_forecasts
     },
     async set_location(state, new_location) {
       state.location = new_location;
@@ -41,6 +47,9 @@ export default moduleOptions => ({
       if (state.all_models === true) {
         await this.dispatch('forecastViz/update_models')
       }
+      state.current_truth = state.temp_current_truth
+      state.as_of_truth = state.temp_as_of_truth
+      state.forecasts = state.temp_forecasts
     },
     set_interval(state, new_interval) {
       state.interval = new_interval;
@@ -52,6 +61,9 @@ export default moduleOptions => ({
       }
       this.dispatch('forecastViz/fetch_as_of_truth');
       this.dispatch('forecastViz/fetch_forecasts');
+      state.current_truth = state.temp_current_truth
+      state.as_of_truth = state.temp_as_of_truth
+      state.forecasts = state.temp_forecasts
     },
     decrement_as_of(state) {
       const as_of_index = state.available_as_ofs[state.target_var].indexOf(state.as_of_date);
@@ -60,15 +72,18 @@ export default moduleOptions => ({
       }
       this.dispatch('forecastViz/fetch_as_of_truth');
       this.dispatch('forecastViz/fetch_forecasts');
+      state.current_truth = state.temp_current_truth
+      state.as_of_truth = state.temp_as_of_truth
+      state.forecasts = state.temp_forecasts
     },
     set_current_truth(state, new_truth) {
-      state.current_truth = new_truth;
+      state.temp_current_truth = new_truth;
     },
     set_as_of_truth(state, new_truth) {
-      state.as_of_truth = new_truth;
+      state.temp_as_of_truth = new_truth;
     },
     set_forecasts(state, new_forecasts) {
-      state.forecasts = new_forecasts;
+      state.temp_forecasts = new_forecasts;
     },
     remove_from_current_model(state, item) {
       const index = state.current_models.indexOf(item);
