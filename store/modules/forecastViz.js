@@ -25,6 +25,7 @@ export default moduleOptions => ({
     temp_current_truth: [],
     temp_as_of_truth: [],
     temp_forecasts: {},
+
   }),
   mutations: {
     async set_target_var(state, new_target_var) {
