@@ -77,13 +77,13 @@ export default moduleOptions => ({
       state.as_of_truth = state.temp_as_of_truth
       state.forecasts = state.temp_forecasts
     },
-    set_current_truth(state, new_truth) {
+    set_temp_current_truth(state, new_truth) {
       state.temp_current_truth = new_truth;
     },
-    set_as_of_truth(state, new_truth) {
+    set_temp_as_of_truth(state, new_truth) {
       state.temp_as_of_truth = new_truth;
     },
-    set_forecasts(state, new_forecasts) {
+    set_temp_forecasts(state, new_forecasts) {
       state.temp_forecasts = new_forecasts;
     },
     remove_from_current_model(state, item) {
@@ -124,9 +124,9 @@ export default moduleOptions => ({
             location: state.location,
             ref_date: state.current_date
           });
-        commit('set_current_truth', data);
+        commit('set_temp_current_truth', data);
       } catch (error) {
-        commit('set_current_truth', []);
+        commit('set_temp_current_truth', []);
         console.log(error);
       }
     },
@@ -141,9 +141,9 @@ export default moduleOptions => ({
             location: state.location,
             ref_date: state.as_of_date
           });
-        commit('set_as_of_truth', data);
+        commit('set_temp_as_of_truth', data);
       } catch (error) {
-        commit('set_as_of_truth', []);
+        commit('set_temp_as_of_truth', []);
         console.log(error);
       }
     },
@@ -158,9 +158,9 @@ export default moduleOptions => ({
             location: state.location,
             ref_date: state.as_of_date
           });
-        commit('set_forecasts', data);
+        commit('set_temp_forecasts', data);
       } catch (error) {
-        commit('set_forecasts', {});
+        commit('set_temp_forecasts', {});
         console.log(error);
       }
     },
