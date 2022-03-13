@@ -1,6 +1,10 @@
-import moment from "moment"
+/* eslint-disable import/no-unresolved */
+/* eslint-disable no-plusplus */
+/* eslint-disable no-param-reassign */
+/* eslint-disable camelcase */
+import moment from 'moment';
 
-export default moduleOptions => ({
+export default (moduleOptions) => ({
   namespaced: true,
   state: () => ({
     target_variables: moduleOptions.target_variables,
@@ -19,7 +23,7 @@ export default moduleOptions => ({
     current_models: moduleOptions.default_models,
     default_models: moduleOptions.default_models,
     data: ['Current Truth', 'Truth As Of'],
-    colours: Array(parseInt((moduleOptions.models.length)/10, 10)+1).fill(['#0d0887', '#46039f', '#7201a8', '#9c179e', '#bd3786', '#d8576b', '#ed7953', '#fb9f3a', '#fdca26', '#f0f921']).flat(),
+    colours: Array(parseInt((moduleOptions.models.length) / 10, 10) + 1).fill(['#0d0887', '#46039f', '#7201a8', '#9c179e', '#bd3786', '#d8576b', '#ed7953', '#fb9f3a', '#fdca26', '#f0f921']).flat(),
     all_models: moduleOptions.all_models,
     disclaimer: moduleOptions.disclaimer || '',
     temp_current_truth: [],
@@ -31,13 +35,13 @@ export default moduleOptions => ({
       state.target_var = new_target_var;
       await this.dispatch('forecastViz/fetch_current_truth');
       await this.dispatch('forecastViz/fetch_as_of_truth');
-      await this.dispatch('forecastViz/fetch_forecasts')
+      await this.dispatch('forecastViz/fetch_forecasts');
       if (state.all_models === true) {
-        await this.dispatch('forecastViz/update_models')
+        await this.dispatch('forecastViz/update_models');
       }
-      state.current_truth = state.temp_current_truth
-      state.as_of_truth = state.temp_as_of_truth
-      state.forecasts = state.temp_forecasts
+      state.current_truth = state.temp_current_truth;
+      state.as_of_truth = state.temp_as_of_truth;
+      state.forecasts = state.temp_forecasts;
     },
     async set_location(state, new_location) {
       state.location = new_location;
@@ -45,11 +49,11 @@ export default moduleOptions => ({
       await this.dispatch('forecastViz/fetch_as_of_truth');
       await this.dispatch('forecastViz/fetch_forecasts');
       if (state.all_models === true) {
-        await this.dispatch('forecastViz/update_models')
+        await this.dispatch('forecastViz/update_models');
       }
-      state.current_truth = state.temp_current_truth
-      state.as_of_truth = state.temp_as_of_truth
-      state.forecasts = state.temp_forecasts
+      state.current_truth = state.temp_current_truth;
+      state.as_of_truth = state.temp_as_of_truth;
+      state.forecasts = state.temp_forecasts;
     },
     set_interval(state, new_interval) {
       state.interval = new_interval;
@@ -61,9 +65,9 @@ export default moduleOptions => ({
       }
       this.dispatch('forecastViz/fetch_as_of_truth');
       this.dispatch('forecastViz/fetch_forecasts');
-      state.current_truth = state.temp_current_truth
-      state.as_of_truth = state.temp_as_of_truth
-      state.forecasts = state.temp_forecasts
+      state.current_truth = state.temp_current_truth;
+      state.as_of_truth = state.temp_as_of_truth;
+      state.forecasts = state.temp_forecasts;
     },
     decrement_as_of(state) {
       const as_of_index = state.available_as_ofs[state.target_var].indexOf(state.as_of_date);
@@ -72,9 +76,9 @@ export default moduleOptions => ({
       }
       this.dispatch('forecastViz/fetch_as_of_truth');
       this.dispatch('forecastViz/fetch_forecasts');
-      state.current_truth = state.temp_current_truth
-      state.as_of_truth = state.temp_as_of_truth
-      state.forecasts = state.temp_forecasts
+      state.current_truth = state.temp_current_truth;
+      state.as_of_truth = state.temp_as_of_truth;
+      state.forecasts = state.temp_forecasts;
     },
     set_current_truth(state, new_truth) {
       state.temp_current_truth = new_truth;
@@ -103,69 +107,75 @@ export default moduleOptions => ({
       state.colours = state.colours.sort(() => 0.5 - Math.random());
     },
     select_all_models(state) {
-      state.current_models = Object.keys(state.forecasts).map((model)=>{
-        return model
-      })
-      state.all_models = true
+      state.current_models = Object.keys(state.forecasts).map((model) => model);
+      state.all_models = true;
     },
     unselect_all_models(state) {
       state.current_models = state.default_models;
-      state.all_models = false
-    }
+      state.all_models = false;
+    },
   },
   actions: {
     async fetch_current_truth({ commit, state }) {
       try {
-        const data = await this.dispatch('forecastViz_fetch_data',
+        const data = await this.dispatch(
+          'forecastViz_fetch_data',
           {
             is_forecast: false,
             target_var: state.target_var,
             location: state.location,
-            ref_date: state.current_date
-          });
+            ref_date: state.current_date,
+          },
+        );
         commit('set_current_truth', data);
       } catch (error) {
         commit('set_current_truth', []);
-        console.log(error);
+        // console.log(error);
       }
     },
     async fetch_as_of_truth({ commit, state }) {
       try {
-        // const target_path = `data/truth/${state.target_var}_${state.location}_${state.as_of_date}.json`;
+        // const target_path =
+        // `data/truth/${state.target_var}_${state.location}_${state.as_of_date}.json`;
         // const data = await moduleOptions.fetch_data(target_path);
-        const data = await this.dispatch('forecastViz_fetch_data',
+        const data = await this.dispatch(
+          'forecastViz_fetch_data',
           {
             is_forecast: false,
             target_var: state.target_var,
             location: state.location,
-            ref_date: state.as_of_date
-          });
+            ref_date: state.as_of_date,
+          },
+        );
         commit('set_as_of_truth', data);
       } catch (error) {
         commit('set_as_of_truth', []);
-        console.log(error);
+        // console.log(error);
       }
     },
     async fetch_forecasts({ commit, state }) {
       try {
-        // const target_path = `data/forecasts/${state.target_var}_${state.location}_${state.as_of_date}.json`;
+        // const target_path =
+        // `data/forecasts/${state.target_var}_${state.location}_${state.as_of_date}.json`;
         // const data = await moduleOptions.fetch_data(target_path);
-        const data = await this.dispatch('forecastViz_fetch_data',
+        const data = await this.dispatch(
+          'forecastViz_fetch_data',
           {
             is_forecast: true,
             target_var: state.target_var,
             location: state.location,
-            ref_date: state.as_of_date
-          });
+            ref_date: state.as_of_date,
+          },
+        );
         commit('set_forecasts', data);
       } catch (error) {
         commit('set_forecasts', {});
-        console.log(error);
+        // console.log(error);
       }
     },
     async update_models({ commit }) {
-      commit('select_all_models')
-    }
+      commit('select_all_models');
+    },
   },
   getters: {
     target_variables: (state) => state.target_variables,
@@ -184,6 +194,7 @@ export default moduleOptions => ({
     disclaimer: (state) => state.disclaimer,
     all_models: (state) => state.all_models,
     plot_layout: (state) => {
+      // eslint-disable-next-line max-len
       const variable = state.target_variables.filter((obj) => obj.value === state.target_var)[0].plot_text;
       const location = state.locations.filter((obj) => obj.value === state.location)[0].text;
       return {
@@ -191,10 +202,10 @@ export default moduleOptions => ({
         showlegend: false,
         title: { text: `Forecasts of ${variable} in ${location} as of ${state.as_of_date}` },
         xaxis: {
-          title: { text: 'Date'  },
+          title: { text: 'Date' },
         },
         yaxis: {
-          title: { text: variable , hoverformat: '.2f'},
+          title: { text: variable, hoverformat: '.2f' },
         },
       };
     },
@@ -230,43 +241,42 @@ export default moduleOptions => ({
         (model) => {
           if (state.current_models.includes(model)) {
             const index = state.models.indexOf(model);
-            var model_forecasts = state.forecasts[model]
-            var date = model_forecasts["target_end_date"]
-            var lq1 = model_forecasts["q0.025"]
-            var lq2 = model_forecasts["q0.25"]
-            var mid = model_forecasts["q0.5"]
-            var uq1 = model_forecasts["q0.75"]
-            var uq2 = model_forecasts["q0.975"]
+            const model_forecasts = state.forecasts[model];
+            const date = model_forecasts.target_end_date;
+            const lq1 = model_forecasts['q0.025'];
+            const lq2 = model_forecasts['q0.25'];
+            const mid = model_forecasts['q0.5'];
+            const uq1 = model_forecasts['q0.75'];
+            const uq2 = model_forecasts['q0.975'];
 
-            //1) combine the arrays:
-            var list = [];
-            for (var j = 0; j < date.length; j++) 
-              list.push({'date': date[j],
-                         'lq1': lq1[j],
-                         'lq2': lq2[j],
-                         'uq1': uq1[j],
-                         'uq2': uq2[j],
-                         'mid': mid[j] });
+            // 1) combine the arrays:
+            const list = [];
+            for (let j = 0; j < date.length; j++) {
+              list.push({
+                date: date[j],
+                lq1: lq1[j],
+                lq2: lq2[j],
+                uq1: uq1[j],
+                uq2: uq2[j],
+                mid: mid[j],
+              });
+            }
 
-            //2) sort:
-            list.sort(function(a, b) {
-              return ((moment(a.date).isBefore(b.date)) ? -1  : 1);
-              //Sort could be modified to, for example, sort on the age 
-              // if the name is the same.
-            });
+            // 2) sort:
+            list.sort((a, b) => ((moment(a.date).isBefore(b.date)) ? -1 : 1));
 
-            //3) separate them back out:
-            for (var k = 0; k < list.length; k++) {
+            // 3) separate them back out:
+            for (let k = 0; k < list.length; k++) {
               model_forecasts.target_end_date[k] = list[k].date;
-              model_forecasts["q0.025"][k] = list[k].lq1;
-              model_forecasts["q0.25"][k] = list[k].lq2;
-              model_forecasts["q0.5"][k] = list[k].mid;
-              model_forecasts["q0.75"][k] = list[k].uq1;
-              model_forecasts["q0.975"][k] = list[k].uq2;
+              model_forecasts['q0.025'][k] = list[k].lq1;
+              model_forecasts['q0.25'][k] = list[k].lq2;
+              model_forecasts['q0.5'][k] = list[k].mid;
+              model_forecasts['q0.75'][k] = list[k].uq1;
+              model_forecasts['q0.975'][k] = list[k].uq2;
             }
 
             return ({
-              x: [state.as_of_truth.date.slice(-1)[0],model_forecasts.target_end_date.slice(0)[0]],
+              x: [state.as_of_truth.date.slice(-1)[0], model_forecasts.target_end_date.slice(0)[0]],
               y: [state.as_of_truth.y.slice(-1)[0], model_forecasts['q0.5'].slice(0)[0]],
 
               mode: 'lines',
@@ -275,7 +285,7 @@ export default moduleOptions => ({
               hovermode: false,
               opacity: 0.7,
               line: { color: state.colours[index] },
-              hoverinfo:'none'
+              hoverinfo: 'none',
             });
           }
           return [];
@@ -287,10 +297,10 @@ export default moduleOptions => ({
         (model) => {
           if (state.current_models.includes(model)) {
             const index = state.models.indexOf(model);
-            const is_hosp = state.target_var === 'hosp'
-            const mode = is_hosp? 'lines':'lines+markers'
+            const is_hosp = state.target_var === 'hosp';
+            const mode = is_hosp ? 'lines' : 'lines+markers';
             const model_forecasts = state.forecasts[model];
-            let upper_quantile; 
+            let upper_quantile;
             let lower_quantile;
             const plot_line = {
               // point forecast
@@ -299,25 +309,23 @@ export default moduleOptions => ({
               type: 'scatter',
               name: model,
               opacity: 0.7,
-              mode: mode,
+              mode,
               line: { color: state.colours[index] },
             };
 
             if (state.interval === '50%') {
               lower_quantile = 'q0.25';
               upper_quantile = 'q0.75';
-            }
-            else if (state.interval === '95%') {
+            } else if (state.interval === '95%') {
               lower_quantile = 'q0.025';
               upper_quantile = 'q0.975';
-            }
-            else{
-              return [plot_line]
+            } else {
+              return [plot_line];
             }
 
-            var x = state.as_of_truth.date.slice(-1).concat(model_forecasts.target_end_date)
-            var y1 = state.as_of_truth.y.slice(-1).concat(model_forecasts[lower_quantile])
-            var y2 =  state.as_of_truth.y.slice(-1).concat(model_forecasts[upper_quantile])
+            const x = state.as_of_truth.date.slice(-1).concat(model_forecasts.target_end_date);
+            const y1 = state.as_of_truth.y.slice(-1).concat(model_forecasts[lower_quantile]);
+            const y2 = state.as_of_truth.y.slice(-1).concat(model_forecasts[upper_quantile]);
 
             return [
               plot_line,
@@ -349,6 +357,6 @@ export default moduleOptions => ({
       pd = pd.concat(...pd1);
 
       return pd;
-    }
-  }
-})
+    },
+  },
+});
