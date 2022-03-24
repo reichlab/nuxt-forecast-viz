@@ -128,6 +128,9 @@ export default (moduleOptions) => ({
   actions: {
     async fetch_current_truth({ commit, state }) {
       try {
+        let target_var = state.target_var
+        let location = state.location
+        let current_date = state.current_date
         const data = await this.dispatch(
           'forecastViz_fetch_data',
           {
@@ -136,7 +139,9 @@ export default (moduleOptions) => ({
             location: state.location,
             ref_date: state.current_date
           });
+        if (target_var === state.target_var && location===state.location && current_date===state.current_date){
         commit('set_temp_current_truth', data);
+        }
       } catch (error) {
         commit('set_temp_current_truth', []);
         console.log(error);
@@ -147,6 +152,9 @@ export default (moduleOptions) => ({
         // const target_path =
         // `data/truth/${state.target_var}_${state.location}_${state.as_of_date}.json`;
         // const data = await moduleOptions.fetch_data(target_path);
+        let target_var = state.target_var
+        let location = state.location
+        let as_of_date = state.as_of_date
         const data = await this.dispatch(
           'forecastViz_fetch_data',
           {
@@ -155,7 +163,9 @@ export default (moduleOptions) => ({
             location: state.location,
             ref_date: state.as_of_date
           });
+        if (target_var === state.target_var && location===state.location && as_of_date===state.as_of_date){
         commit('set_temp_as_of_truth', data);
+        }
       } catch (error) {
         commit('set_temp_as_of_truth', []);
         console.log(error);
@@ -166,6 +176,9 @@ export default (moduleOptions) => ({
         // const target_path =
         // `data/forecasts/${state.target_var}_${state.location}_${state.as_of_date}.json`;
         // const data = await moduleOptions.fetch_data(target_path);
+        let target_var = state.target_var
+        let location = state.location
+        let as_of_date = state.as_of_date
         const data = await this.dispatch(
           'forecastViz_fetch_data',
           {
@@ -174,7 +187,9 @@ export default (moduleOptions) => ({
             location: state.location,
             ref_date: state.as_of_date
           });
+        if (target_var === state.target_var && location===state.location && as_of_date===state.as_of_date){
         commit('set_temp_forecasts', data);
+        }
       } catch (error) {
         commit('set_temp_forecasts', {});
         console.log(error);
@@ -182,6 +197,9 @@ export default (moduleOptions) => ({
     },
     async first_fetch_current_truth({ commit, state }) {
       try {
+        let target_var = state.target_var
+        let location = state.location
+        let current_date = state.current_date
         const data = await this.dispatch(
           'forecastViz_fetch_data',
           {
@@ -190,7 +208,9 @@ export default (moduleOptions) => ({
             location: state.location,
             ref_date: state.current_date
           });
+          if (target_var === state.target_var && location===state.location && current_date===state.current_date){
         commit('set_current_current_truth', data);
+          }
       } catch (error) {
         commit('set_current_current_truth', []);
         console.log(error);
@@ -201,6 +221,9 @@ export default (moduleOptions) => ({
         // const target_path =
         // `data/truth/${state.target_var}_${state.location}_${state.as_of_date}.json`;
         // const data = await moduleOptions.fetch_data(target_path);
+        let target_var = state.target_var
+        let location = state.location
+        let as_of_date = state.as_of_date
         const data = await this.dispatch(
           'forecastViz_fetch_data',
           {
@@ -228,7 +251,9 @@ export default (moduleOptions) => ({
             location: state.location,
             ref_date: state.as_of_date
           });
+          if (target_var === state.target_var && location===state.location && as_of_date===state.as_of_date){
         commit('set_current_forecasts', data);
+          }
       } catch (error) {
         commit('set_current_forecasts', {});
         console.log(error);
