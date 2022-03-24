@@ -25,10 +25,11 @@ export default (moduleOptions) => ({
     data: ['Current Truth', 'Truth As Of'],
     colours: Array(parseInt((moduleOptions.models.length) / 10, 10) + 1).fill(['#0d0887', '#46039f', '#7201a8', '#9c179e', '#bd3786', '#d8576b', '#ed7953', '#fb9f3a', '#fdca26', '#f0f921']).flat(),
     all_models: moduleOptions.all_models,
-    disclaimer: moduleOptions.disclaimer || '',
+    disclaimer: moduleOptions.disclaimer,
     temp_current_truth: [],
     temp_as_of_truth: [],
     temp_forecasts: {},
+
   }),
   mutations: {
     async set_target_var(state, new_target_var) {
@@ -80,14 +81,23 @@ export default (moduleOptions) => ({
       state.as_of_truth = state.temp_as_of_truth;
       state.forecasts = state.temp_forecasts;
     },
-    set_current_truth(state, new_truth) {
+    set_temp_current_truth(state, new_truth) {
       state.temp_current_truth = new_truth;
     },
-    set_as_of_truth(state, new_truth) {
+    set_temp_as_of_truth(state, new_truth) {
       state.temp_as_of_truth = new_truth;
     },
-    set_forecasts(state, new_forecasts) {
+    set_temp_forecasts(state, new_forecasts) {
       state.temp_forecasts = new_forecasts;
+    },
+    set_current_current_truth(state, new_truth) {
+      state.current_truth = new_truth;
+    },
+    set_current_as_of_truth(state, new_truth) {
+      state.as_of_truth = new_truth;
+    },
+    set_current_forecasts(state, new_forecasts) {
+      state.forecasts = new_forecasts;
     },
     remove_from_current_model(state, item) {
       const index = state.current_models.indexOf(item);
@@ -124,13 +134,12 @@ export default (moduleOptions) => ({
             is_forecast: false,
             target_var: state.target_var,
             location: state.location,
-            ref_date: state.current_date,
-          },
-        );
-        commit('set_current_truth', data);
+            ref_date: state.current_date
+          });
+        commit('set_temp_current_truth', data);
       } catch (error) {
-        commit('set_current_truth', []);
-        // console.log(error);
+        commit('set_temp_current_truth', []);
+        console.log(error);
       }
     },
     async fetch_as_of_truth({ commit, state }) {
@@ -144,13 +153,12 @@ export default (moduleOptions) => ({
             is_forecast: false,
             target_var: state.target_var,
             location: state.location,
-            ref_date: state.as_of_date,
-          },
-        );
-        commit('set_as_of_truth', data);
+            ref_date: state.as_of_date
+          });
+        commit('set_temp_as_of_truth', data);
       } catch (error) {
-        commit('set_as_of_truth', []);
-        // console.log(error);
+        commit('set_temp_as_of_truth', []);
+        console.log(error);
       }
     },
     async fetch_forecasts({ commit, state }) {
@@ -164,13 +172,66 @@ export default (moduleOptions) => ({
             is_forecast: true,
             target_var: state.target_var,
             location: state.location,
-            ref_date: state.as_of_date,
-          },
-        );
-        commit('set_forecasts', data);
+            ref_date: state.as_of_date
+          });
+        commit('set_temp_forecasts', data);
       } catch (error) {
-        commit('set_forecasts', {});
-        // console.log(error);
+        commit('set_temp_forecasts', {});
+        console.log(error);
+      }
+    },
+    async first_fetch_current_truth({ commit, state }) {
+      try {
+        const data = await this.dispatch(
+          'forecastViz_fetch_data',
+          {
+            is_forecast: false,
+            target_var: state.target_var,
+            location: state.location,
+            ref_date: state.current_date
+          });
+        commit('set_current_current_truth', data);
+      } catch (error) {
+        commit('set_current_current_truth', []);
+        console.log(error);
+      }
+    },
+    async first_fetch_as_of_truth({ commit, state }) {
+      try {
+        // const target_path =
+        // `data/truth/${state.target_var}_${state.location}_${state.as_of_date}.json`;
+        // const data = await moduleOptions.fetch_data(target_path);
+        const data = await this.dispatch(
+          'forecastViz_fetch_data',
+          {
+            is_forecast: false,
+            target_var: state.target_var,
+            location: state.location,
+            ref_date: state.as_of_date
+          });
+        commit('set_current_as_of_truth', data);
+      } catch (error) {
+        commit('set_current_as_of_truth', []);
+        console.log(error);
+      }
+    },
+    async first_fetch_forecasts({ commit, state }) {
+      try {
+        // const target_path =
+        // `data/forecasts/${state.target_var}_${state.location}_${state.as_of_date}.json`;
+        // const data = await moduleOptions.fetch_data(target_path);
+        const data = await this.dispatch(
+          'forecastViz_fetch_data',
+          {
+            is_forecast: true,
+            target_var: state.target_var,
+            location: state.location,
+            ref_date: state.as_of_date
+          });
+        commit('set_current_forecasts', data);
+      } catch (error) {
+        commit('set_current_forecasts', {});
+        console.log(error);
       }
     },
     async update_models({ commit }) {

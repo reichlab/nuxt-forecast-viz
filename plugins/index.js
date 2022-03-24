@@ -285,9 +285,10 @@ class ForecastViz {
     // handle no store:
     if (!this.storeModuleExists()) return undefined
     // adjust the data value using a store mutation
-    await this.store.dispatch('forecastViz/fetch_current_truth');
-    await this.store.dispatch('forecastViz/fetch_as_of_truth');
-    await this.store.dispatch('forecastViz/fetch_forecasts');
+    await this.store.dispatch('forecastViz/first_fetch_current_truth');
+    await this.store.dispatch('forecastViz/first_fetch_as_of_truth');
+    await this.store.dispatch('forecastViz/first_fetch_forecasts');
+   
   }
 }
 
