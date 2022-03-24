@@ -1,7 +1,7 @@
 <template>
   <div id="vizualisation">
     <div id="vizualizations" class="container-fluid">
-      <div class = "row">
+      <div class = "row" id = "row">
         <div id="options" class="col-md-3">
           <form>
             <div class="row var">
@@ -58,7 +58,7 @@
             </div>
             <div class="form-group form-check" style="min-height:0px; margin-bottom: 5px" v-for="(item, index) in models" v-bind:key="index+100" >
               <div v-if="!forecasts.hasOwnProperty(item)" style="color: lightgrey">
-                <label><input type="checkbox" disabled="disabled">&nbsp; {{item}}&nbsp;<span class="dot" style="backgroundColor: grey"></span></label>
+                <label><input type="checkbox" :id="item" :value="item" disabled="disabled" >&nbsp; {{item}}&nbsp;<span class="dot" style="backgroundColor: grey"></span></label>
               </div>
             </div>
           </div>
