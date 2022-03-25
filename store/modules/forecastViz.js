@@ -1,7 +1,3 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable no-plusplus */
-/* eslint-disable no-param-reassign */
-/* eslint-disable camelcase */
 import moment from 'moment'
 
 export default (moduleOptions) => ({
@@ -71,7 +67,7 @@ export default (moduleOptions) => ({
     set_interval (state, new_interval) {
       state.interval = new_interval
     },
-    increment_as_of (state) {
+    async increment_as_of (state) {
       const as_of_index = state.available_as_ofs[state.target_var].indexOf(
         state.as_of_date
       )
@@ -79,13 +75,12 @@ export default (moduleOptions) => ({
         state.as_of_date =
           state.available_as_ofs[state.target_var][as_of_index + 1]
       }
-      this.dispatch('forecastViz/fetch_as_of_truth')
-      this.dispatch('forecastViz/fetch_forecasts')
-      state.current_truth = state.temp_current_truth
+      await this.dispatch('forecastViz/fetch_as_of_truth')
+      await this.dispatch('forecastViz/fetch_forecasts')
       state.as_of_truth = state.temp_as_of_truth
       state.forecasts = state.temp_forecasts
     },
-    decrement_as_of (state) {
+    async decrement_as_of (state) {
       const as_of_index = state.available_as_ofs[state.target_var].indexOf(
         state.as_of_date
       )
@@ -93,9 +88,8 @@ export default (moduleOptions) => ({
         state.as_of_date =
           state.available_as_ofs[state.target_var][as_of_index - 1]
       }
-      this.dispatch('forecastViz/fetch_as_of_truth')
-      this.dispatch('forecastViz/fetch_forecasts')
-      state.current_truth = state.temp_current_truth
+      await this.dispatch('forecastViz/fetch_as_of_truth')
+      await this.dispatch('forecastViz/fetch_forecasts')
       state.as_of_truth = state.temp_as_of_truth
       state.forecasts = state.temp_forecasts
     },
@@ -160,9 +154,6 @@ export default (moduleOptions) => ({
     },
     async fetch_as_of_truth ({ commit, state }) {
       try {
-        // const target_path =
-        // `data/truth/${state.target_var}_${state.location}_${state.as_of_date}.json`;
-        // const data = await moduleOptions.fetch_data(target_path);
         const data = await this.dispatch('forecastViz_fetch_data', {
           is_forecast: false,
           target_var: state.target_var,
@@ -177,9 +168,6 @@ export default (moduleOptions) => ({
     },
     async fetch_forecasts ({ commit, state }) {
       try {
-        // const target_path =
-        // `data/forecasts/${state.target_var}_${state.location}_${state.as_of_date}.json`;
-        // const data = await moduleOptions.fetch_data(target_path);
         const data = await this.dispatch('forecastViz_fetch_data', {
           is_forecast: true,
           target_var: state.target_var,
@@ -208,9 +196,6 @@ export default (moduleOptions) => ({
     },
     async first_fetch_as_of_truth ({ commit, state }) {
       try {
-        // const target_path =
-        // `data/truth/${state.target_var}_${state.location}_${state.as_of_date}.json`;
-        // const data = await moduleOptions.fetch_data(target_path);
         const data = await this.dispatch('forecastViz_fetch_data', {
           is_forecast: false,
           target_var: state.target_var,
@@ -225,9 +210,6 @@ export default (moduleOptions) => ({
     },
     async first_fetch_forecasts ({ commit, state }) {
       try {
-        // const target_path =
-        // `data/forecasts/${state.target_var}_${state.location}_${state.as_of_date}.json`;
-        // const data = await moduleOptions.fetch_data(target_path);
         const data = await this.dispatch('forecastViz_fetch_data', {
           is_forecast: true,
           target_var: state.target_var,
