@@ -1,7 +1,7 @@
 <template>
   <div id="vizualisation">
-    <div id="vizualizations" class="container-fluid">
-      <div class = "row" id = "row">
+    <div id="forecastViz_vizualizations" class="container-fluid">
+      <div class = "row">
         <div id="options" class="col-md-3">
           <form>
             <div class="row var">
@@ -35,13 +35,13 @@
 
           <label for = "data">Select Truth Data:</label>
           <div class="form-group form-check select_data ">
-            <input type="checkbox" id="Current Truth" value="Current Truth" checked @click="handle_data('Current Truth',0)" >&nbsp; Current ({{current_date}}) &nbsp;<span class="dot" style="background-color: lightgrey; "></span>&nbsp;&nbsp;&nbsp;
+            <input type="checkbox" id="forecastViz_Current_Truth" value="Current Truth" checked @click="handle_data('Current Truth',0)" >&nbsp; Current ({{current_date}}) &nbsp;<span class="dot" style="background-color: lightgrey; "></span>&nbsp;&nbsp;&nbsp;
             <br>
-            <input type="checkbox" id="Truth as Of" value="Truth as Of" checked @click="handle_data('Truth as Of',1)">&nbsp; As of {{as_of_date}}&nbsp;<span class="dot" style="background-color: black;"></span>
+            <input type="checkbox" id="forecastViz_Truth_as_Of" value="Truth as Of" checked @click="handle_data('Truth as Of',1)">&nbsp; As of {{as_of_date}}&nbsp;<span class="dot" style="background-color: black;"></span>
           </div>
           <button type="button" class="btn xwwbtn-outline-dark btn-sm rounded-pill" style="float: right;" @click="shuffle_colours()">Shuffle Colours</button>
           <label class="label" for = "model">Select Models:</label>
-          <input type="checkbox" id="all" :value="0" @click="select_all_models()" >
+          <input type="checkbox" id="forecastViz_all" :value="0" @click="select_all_models()" >
 
           <div id="select_model" v-bind:key="current_models">
             <div class="form-group form-check" style="min-height:0px; margin-bottom: 5px" v-for="(item, index) in models" v-bind:key="index" >
@@ -64,7 +64,7 @@
           </div>
         </div>
 
-        <div id="viz" class="col-md-9">
+        <div id="forecastViz_viz" class="col-md-9">
           <p class="disclaimer" >
             <b>{{disclaimer}}</b>
           </p>
