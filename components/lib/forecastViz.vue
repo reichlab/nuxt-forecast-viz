@@ -258,7 +258,7 @@ html,body{
   font-size: 14px;
 }
 
-#vizualizations {
+#forecastViz_vizualizations {
   padding: 1% 3%;
   border: none;
 }
