@@ -5,5 +5,6 @@
   "main": "module.js",
   "author": "Evan L. Ray",
   "license": "MIT",
-  "private": false
+  "private": false,
+  "dependencies": {}
 }
