@@ -1,10 +1,10 @@
 <template>
-  <div id="vizualisation">
-    <div id="vizualizations" class="container-fluid">
+  <div id="forecastViz_vizualisation">
+    <div id="forecastViz_vizualizations" class="container-fluid">
       <div class = "row">
-        <div id="options" class="col-md-3">
+        <div id="forecastViz_options" class="col-md-3">
           <form>
-            <div class="row var">
+            <div class="row forecastViz_var">
               <label for = "target_variable" class="col-md-5">Outcome:</label>
               <b-form-select name = "target_variable"
                             v-model="target_var"
@@ -13,7 +13,7 @@
                             class="col-md-7">
               </b-form-select>
             </div>
-            <div class="row var">
+            <div class="row forecastViz_var">
               <label for = "location" class="col-md-5">Location:</label>
               <b-form-select name = "location"
                             v-model="location"
@@ -22,7 +22,7 @@
                             class="col-md-7">
               </b-form-select>
             </div>
-            <div class="row var">
+            <div class="row forecastViz_var">
               <label for = "interval" class="col-md-5">Interval:</label>
               <b-form-select name = "interval"
                             v-model="interval"
@@ -34,23 +34,23 @@
           </form>
 
           <label for = "data">Select Truth Data:</label>
-          <div class="form-group form-check select_data ">
-            <input type="checkbox" id="Current Truth" value="Current Truth" checked @click="handle_data('Current Truth',0)" >&nbsp; Current ({{current_date}}) &nbsp;<span class="dot" style="background-color: lightgrey; "></span>&nbsp;&nbsp;&nbsp;
+          <div class="form-group form-check forecastViz_select_data ">
+            <input type="checkbox" id="forecastViz_Current_Truth" value="Current Truth" checked @click="handle_data('Current Truth',0)" >&nbsp; Current ({{current_date}}) &nbsp;<span class="forecastViz_dot" style="background-color: lightgrey; "></span>&nbsp;&nbsp;&nbsp;
             <br>
-            <input type="checkbox" id="Truth as Of" value="Truth as Of" checked @click="handle_data('Truth as Of',1)">&nbsp; As of {{as_of_date}}&nbsp;<span class="dot" style="background-color: black;"></span>
+            <input type="checkbox" id="forecastViz_Truth_as_Of" value="Truth as Of" checked @click="handle_data('Truth as Of',1)">&nbsp; As of {{as_of_date}}&nbsp;<span class="forecastViz_dot" style="background-color: black;"></span>
           </div>
           <button type="button" class="btn xwwbtn-outline-dark btn-sm rounded-pill" style="float: right;" @click="shuffle_colours()">Shuffle Colours</button>
-          <label class="label" for = "model">Select Models:</label>
-          <input type="checkbox" id="all" :value="0" @click="select_all_models()" >
+          <label class="forecastViz_label" for = "model">Select Models:</label>
+          <input type="checkbox" id="forecastViz_all" :value="0" @click="select_all_models()" >
 
-          <div id="select_model" v-bind:key="current_models">
+          <div id="forecastViz_select_model" v-bind:key="current_models">
             <div class="form-group form-check" style="min-height:0px; margin-bottom: 5px" v-for="(item, index) in models" v-bind:key="index" >
               <div v-if="forecasts.hasOwnProperty(item)" v-bind:key="forecasts">
                 <div v-if="current_models.includes(item)" >
-                  <label><input type="checkbox" :id="item" :value="item" @click="handle_models(item,index)" checked>&nbsp; {{item}}&nbsp;<span class="dot" v-bind:style="{ backgroundColor: colours[index]}"></span></label>
+                  <label><input type="checkbox" :id="item" :value="item" @click="handle_models(item,index)" checked>&nbsp; {{item}}&nbsp;<span class="forecastViz_dot" v-bind:style="{ backgroundColor: colours[index]}"></span></label>
                 </div>
                 <div v-else >
-                  <label><input type="checkbox" :id="item" :value="item" @click="handle_models(item,index)" >&nbsp; {{item}}&nbsp;<span class="dot" v-bind:style="{ backgroundColor: colours[index]}"></span></label>
+                  <label><input type="checkbox" :id="item" :value="item" @click="handle_models(item,index)" >&nbsp; {{item}}&nbsp;<span class="forecastViz_dot" v-bind:style="{ backgroundColor: colours[index]}"></span></label>
                 </div>
               </div>
               <div v-else style="margin:0, padding:0">
@@ -58,14 +58,14 @@
             </div>
             <div class="form-group form-check" style="min-height:0px; margin-bottom: 5px" v-for="(item, index) in models" v-bind:key="index+100" >
               <div v-if="!forecasts.hasOwnProperty(item)" style="color: lightgrey">
-                <label><input type="checkbox" disabled="disabled">&nbsp; {{item}}&nbsp;<span class="dot" style="backgroundColor: grey"></span></label>
+                <label><input type="checkbox" :id="item" :value="item" disabled="disabled" >&nbsp; {{item}}&nbsp;<span class="forecastViz_dot" style="backgroundColor: grey"></span></label>
               </div>
             </div>
           </div>
         </div>
 
-        <div id="viz" class="col-md-9">
-          <p class="disclaimer" >
+        <div id="forecastViz_viz" class="col-md-9">
+          <p class="forecastViz_disclaimer" >
             <b>{{disclaimer}}</b>
           </p>
           <client-only>
@@ -226,12 +226,12 @@ export default {
 
 <style>
 
-#vizualisation {
+#forecastViz_vizualisation {
   width: 100% !important;
   margin: 0;
 }
 
-.dot {
+.forecastViz_dot {
   height: 15px;
   width: 15px;
   border-radius: 50%;
@@ -243,38 +243,38 @@ html,body{
     overflow-x: hidden !important;
 }
 
-.disclaimer{
+.forecastViz_disclaimer{
   text-align:center;
   margin-left: 3%;
   margin-right: 3%;
   font-size: 18px
 }
 
-.var{
+.forecastViz_var{
   margin-bottom: 10px;
 }
 
-.select_data{
+.forecastViz_select_data{
   font-size: 14px;
 }
 
-#vizualizations {
+#forecastViz_vizualizations {
   padding: 1% 3%;
   border: none;
 }
-#select_model{
+#forecastViz_select_model{
   height: 48vh;
   overflow-y: scroll;
   margin-top: 20px;
   font-size: 14px;
 
 }
-.label{
+.forecastViz_label{
   margin-top: 5px;
   margin-bottom: 0px ;
 }
 
-#options {
+#forecastViz_options {
   background: #fff;
   padding: 5px;
 }
