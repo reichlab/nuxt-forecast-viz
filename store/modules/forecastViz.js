@@ -1,6 +1,6 @@
-import moment from "moment"
+import moment from 'moment'
 
-export default moduleOptions => ({
+export default (moduleOptions) => ({
   namespaced: true,
   state: () => ({
     target_variables: moduleOptions.target_variables,
@@ -19,136 +19,210 @@ export default moduleOptions => ({
     current_models: moduleOptions.default_models,
     default_models: moduleOptions.default_models,
     data: ['Current Truth', 'Truth As Of'],
-    colours: Array(parseInt((moduleOptions.models.length)/10, 10)+1).fill(['#0d0887', '#46039f', '#7201a8', '#9c179e', '#bd3786', '#d8576b', '#ed7953', '#fb9f3a', '#fdca26', '#f0f921']).flat(),
+    colours: Array(parseInt(moduleOptions.models.length / 10, 10) + 1)
+      .fill([
+        '#0d0887',
+        '#46039f',
+        '#7201a8',
+        '#9c179e',
+        '#bd3786',
+        '#d8576b',
+        '#ed7953',
+        '#fb9f3a',
+        '#fdca26',
+        '#f0f921'
+      ])
+      .flat(),
     all_models: moduleOptions.all_models,
-    disclaimer: moduleOptions.disclaimer || ''
+    disclaimer: moduleOptions.disclaimer,
+    temp_current_truth: [],
+    temp_as_of_truth: [],
+    temp_forecasts: {}
   }),
   mutations: {
-    async set_target_var(state, new_target_var) {
-      state.target_var = new_target_var;
-      await this.dispatch('forecastViz/fetch_current_truth');
-      await this.dispatch('forecastViz/fetch_as_of_truth');
+    async set_target_var (state, new_target_var) {
+      state.target_var = new_target_var
+      await this.dispatch('forecastViz/fetch_current_truth')
+      await this.dispatch('forecastViz/fetch_as_of_truth')
       await this.dispatch('forecastViz/fetch_forecasts')
       if (state.all_models === true) {
         await this.dispatch('forecastViz/update_models')
       }
+      state.current_truth = state.temp_current_truth
+      state.as_of_truth = state.temp_as_of_truth
+      state.forecasts = state.temp_forecasts
     },
-    async set_location(state, new_location) {
-      state.location = new_location;
-      await this.dispatch('forecastViz/fetch_current_truth');
-      await this.dispatch('forecastViz/fetch_as_of_truth');
-      await this.dispatch('forecastViz/fetch_forecasts');
+    async set_location (state, new_location) {
+      state.location = new_location
+      await this.dispatch('forecastViz/fetch_current_truth')
+      await this.dispatch('forecastViz/fetch_as_of_truth')
+      await this.dispatch('forecastViz/fetch_forecasts')
       if (state.all_models === true) {
         await this.dispatch('forecastViz/update_models')
       }
+      state.current_truth = state.temp_current_truth
+      state.as_of_truth = state.temp_as_of_truth
+      state.forecasts = state.temp_forecasts
     },
-    set_interval(state, new_interval) {
-      state.interval = new_interval;
+    set_interval (state, new_interval) {
+      state.interval = new_interval
     },
-    increment_as_of(state) {
-      const as_of_index = state.available_as_ofs[state.target_var].indexOf(state.as_of_date);
+    async increment_as_of (state) {
+      const as_of_index = state.available_as_ofs[state.target_var].indexOf(
+        state.as_of_date
+      )
       if (as_of_index < state.available_as_ofs[state.target_var].length - 1) {
-        state.as_of_date = state.available_as_ofs[state.target_var][as_of_index + 1];
+        state.as_of_date =
+          state.available_as_ofs[state.target_var][as_of_index + 1]
       }
-      this.dispatch('forecastViz/fetch_as_of_truth');
-      this.dispatch('forecastViz/fetch_forecasts');
+      await this.dispatch('forecastViz/fetch_as_of_truth')
+      await this.dispatch('forecastViz/fetch_forecasts')
+      state.as_of_truth = state.temp_as_of_truth
+      state.forecasts = state.temp_forecasts
     },
-    decrement_as_of(state) {
-      const as_of_index = state.available_as_ofs[state.target_var].indexOf(state.as_of_date);
+    async decrement_as_of (state) {
+      const as_of_index = state.available_as_ofs[state.target_var].indexOf(
+        state.as_of_date
+      )
       if (as_of_index > 0) {
-        state.as_of_date = state.available_as_ofs[state.target_var][as_of_index - 1];
+        state.as_of_date =
+          state.available_as_ofs[state.target_var][as_of_index - 1]
       }
-      this.dispatch('forecastViz/fetch_as_of_truth');
-      this.dispatch('forecastViz/fetch_forecasts');
+      await this.dispatch('forecastViz/fetch_as_of_truth')
+      await this.dispatch('forecastViz/fetch_forecasts')
+      state.as_of_truth = state.temp_as_of_truth
+      state.forecasts = state.temp_forecasts
     },
-    set_current_truth(state, new_truth) {
-      state.current_truth = new_truth;
+    set_temp_current_truth (state, new_truth) {
+      state.temp_current_truth = new_truth
     },
-    set_as_of_truth(state, new_truth) {
-      state.as_of_truth = new_truth;
+    set_temp_as_of_truth (state, new_truth) {
+      state.temp_as_of_truth = new_truth
     },
-    set_forecasts(state, new_forecasts) {
-      state.forecasts = new_forecasts;
+    set_temp_forecasts (state, new_forecasts) {
+      state.temp_forecasts = new_forecasts
     },
-    remove_from_current_model(state, item) {
-      const index = state.current_models.indexOf(item);
-      state.current_models.splice(index, 1);
+    set_current_current_truth (state, new_truth) {
+      state.current_truth = new_truth
     },
-    add_to_current_model(state, val) {
-      state.current_models.push(val);
+    set_current_as_of_truth (state, new_truth) {
+      state.as_of_truth = new_truth
     },
-    add_to_data(state, val) {
-      state.data.push(val);
+    set_current_forecasts (state, new_forecasts) {
+      state.forecasts = new_forecasts
     },
-    remove_from_data(state, item) {
-      const index = state.data.indexOf(item);
-      state.data.splice(index, 1);
+    remove_from_current_model (state, item) {
+      const index = state.current_models.indexOf(item)
+      state.current_models.splice(index, 1)
     },
-    shuffle_colours(state) {
-      state.colours = state.colours.sort(() => 0.5 - Math.random());
+    add_to_current_model (state, val) {
+      state.current_models.push(val)
     },
-    select_all_models(state) {
-      state.current_models = Object.keys(state.forecasts).map((model)=>{
-        return model
-      })
+    add_to_data (state, val) {
+      state.data.push(val)
+    },
+    remove_from_data (state, item) {
+      const index = state.data.indexOf(item)
+      state.data.splice(index, 1)
+    },
+    shuffle_colours (state) {
+      state.colours = state.colours.sort(() => 0.5 - Math.random())
+    },
+    select_all_models (state) {
+      state.current_models = Object.keys(state.forecasts).map((model) => model)
       state.all_models = true
     },
-    unselect_all_models(state) {
-      state.current_models = state.default_models;
+    unselect_all_models (state) {
+      state.current_models = state.default_models
       state.all_models = false
     }
   },
   actions: {
-    async fetch_current_truth({ commit, state }) {
+    async fetch_current_truth ({ commit, state }) {
       try {
-        const data = await this.dispatch('forecastViz_fetch_data',
-          {
-            is_forecast: false,
-            target_var: state.target_var,
-            location: state.location,
-            ref_date: state.current_date
-          });
-        commit('set_current_truth', data);
+        const data = await this.dispatch('forecastViz_fetch_data', {
+          is_forecast: false,
+          target_var: state.target_var,
+          location: state.location,
+          ref_date: state.current_date
+        })
+        commit('set_temp_current_truth', data)
       } catch (error) {
-        commit('set_current_truth', []);
-        console.log(error);
+        commit('set_temp_current_truth', [])
+        console.log(error)
       }
     },
-    async fetch_as_of_truth({ commit, state }) {
+    async fetch_as_of_truth ({ commit, state }) {
       try {
-        // const target_path = `data/truth/${state.target_var}_${state.location}_${state.as_of_date}.json`;
-        // const data = await moduleOptions.fetch_data(target_path);
-        const data = await this.dispatch('forecastViz_fetch_data',
-          {
-            is_forecast: false,
-            target_var: state.target_var,
-            location: state.location,
-            ref_date: state.as_of_date
-          });
-        commit('set_as_of_truth', data);
+        const data = await this.dispatch('forecastViz_fetch_data', {
+          is_forecast: false,
+          target_var: state.target_var,
+          location: state.location,
+          ref_date: state.as_of_date
+        })
+        commit('set_temp_as_of_truth', data)
       } catch (error) {
-        commit('set_as_of_truth', []);
-        console.log(error);
+        commit('set_temp_as_of_truth', [])
+        console.log(error)
       }
     },
-    async fetch_forecasts({ commit, state }) {
+    async fetch_forecasts ({ commit, state }) {
       try {
-        // const target_path = `data/forecasts/${state.target_var}_${state.location}_${state.as_of_date}.json`;
-        // const data = await moduleOptions.fetch_data(target_path);
-        const data = await this.dispatch('forecastViz_fetch_data',
-          {
-            is_forecast: true,
-            target_var: state.target_var,
-            location: state.location,
-            ref_date: state.as_of_date
-          });
-        commit('set_forecasts', data);
+        const data = await this.dispatch('forecastViz_fetch_data', {
+          is_forecast: true,
+          target_var: state.target_var,
+          location: state.location,
+          ref_date: state.as_of_date
+        })
+        commit('set_temp_forecasts', data)
       } catch (error) {
-        commit('set_forecasts', {});
-        console.log(error);
+        commit('set_temp_forecasts', {})
+        console.log(error)
       }
     },
-    async update_models({ commit }) {
+    async first_fetch_current_truth ({ commit, state }) {
+      try {
+        const data = await this.dispatch('forecastViz_fetch_data', {
+          is_forecast: false,
+          target_var: state.target_var,
+          location: state.location,
+          ref_date: state.current_date
+        })
+        commit('set_current_current_truth', data)
+      } catch (error) {
+        commit('set_current_current_truth', [])
+        console.log(error)
+      }
+    },
+    async first_fetch_as_of_truth ({ commit, state }) {
+      try {
+        const data = await this.dispatch('forecastViz_fetch_data', {
+          is_forecast: false,
+          target_var: state.target_var,
+          location: state.location,
+          ref_date: state.as_of_date
+        })
+        commit('set_current_as_of_truth', data)
+      } catch (error) {
+        commit('set_current_as_of_truth', [])
+        console.log(error)
+      }
+    },
+    async first_fetch_forecasts ({ commit, state }) {
+      try {
+        const data = await this.dispatch('forecastViz_fetch_data', {
+          is_forecast: true,
+          target_var: state.target_var,
+          location: state.location,
+          ref_date: state.as_of_date
+        })
+        commit('set_current_forecasts', data)
+      } catch (error) {
+        commit('set_current_forecasts', {})
+        console.log(error)
+      }
+    },
+    async update_models ({ commit }) {
       commit('select_all_models')
     }
   },
@@ -169,22 +243,29 @@ export default moduleOptions => ({
     disclaimer: (state) => state.disclaimer,
     all_models: (state) => state.all_models,
     plot_layout: (state) => {
-      const variable = state.target_variables.filter((obj) => obj.value === state.target_var)[0].plot_text;
-      const location = state.locations.filter((obj) => obj.value === state.location)[0].text;
+      // eslint-disable-next-line max-len
+      const variable = state.target_variables.filter(
+        (obj) => obj.value === state.target_var
+      )[0].plot_text
+      const location = state.locations.filter(
+        (obj) => obj.value === state.location
+      )[0].text
       return {
         autosize: true,
         showlegend: false,
-        title: { text: `Forecasts of ${variable} in ${location} as of ${state.as_of_date}` },
+        title: {
+          text: `Forecasts of ${variable} in ${location} as of ${state.as_of_date}`
+        },
         xaxis: {
-          title: { text: 'Date'  },
+          title: { text: 'Date' }
         },
         yaxis: {
-          title: { text: variable , hoverformat: '.2f'},
-        },
-      };
+          title: { text: variable, hoverformat: '.2f' }
+        }
+      }
     },
     plot_data: (state) => {
-      let pd = [];
+      let pd = []
       if (state.data.includes('Current Truth')) {
         if (state.current_truth.length){
         pd.push({
@@ -194,10 +275,9 @@ export default moduleOptions => ({
           mode: 'lines',
           name: 'Current Truth',
           marker: {
-            color: 'darkgray',
-          },
-        });
-       }
+            color: 'darkgray'
+          }
+        })
       }
       if (state.data.includes('Truth As Of')) {
       if (state.as_of_truth.length){
@@ -209,9 +289,9 @@ export default moduleOptions => ({
           opacity: 0.5,
           name: `Truth as of ${state.as_of_date}`,
           marker: {
-            color: 'black',
-          },
-        });
+            color: 'black'
+          }
+        })
       }
     }
     let pd0 = []
@@ -303,29 +383,15 @@ export default moduleOptions => ({
             var x = state.as_of_truth.date.slice(-1).concat(model_forecasts.target_end_date)
             var y1 = state.as_of_truth.y.slice(-1).concat(model_forecasts[lower_quantile])
             var y2 =  state.as_of_truth.y.slice(-1).concat(model_forecasts[upper_quantile])
-
-            return [
-              plot_line,
-              {
-                // interval forecast -- currently fixed at 50%
-                x: [].concat(
-                  x,
-                  x.slice().reverse(),
-                ),
-                y: [].concat(
-                  y1,
-                  y2.slice().reverse(),
-                ),
-                fill: 'toself',
-                fillcolor: state.colours[index],
-                opacity: 0.3,
-                line: { color: 'transparent' },
-                type: 'scatter',
-                name: model,
-                showlegend: false,
-                hoverinfo: 'skip',
-              },
-            ];
+     
+          if (state.interval === '50%') {
+            lower_quantile = 'q0.25'
+            upper_quantile = 'q0.75'
+          } else if (state.interval === '95%') {
+            lower_quantile = 'q0.025'
+            upper_quantile = 'q0.975'
+          } else {
+            return [plot_line]
           }
           return [];
           },
