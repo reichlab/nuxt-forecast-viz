@@ -4,7 +4,7 @@
       <div class = "row">
         <div id="forecastViz_options" class="col-md-3">
           <form>
-            <div class="row var">
+            <div class="row forecastViz_var">
               <label for = "target_variable" class="col-md-5">Outcome:</label>
               <b-form-select name = "target_variable"
                             v-model="target_var"
@@ -13,7 +13,7 @@
                             class="col-md-7">
               </b-form-select>
             </div>
-            <div class="row var">
+            <div class="row forecastViz_var">
               <label for = "location" class="col-md-5">Location:</label>
               <b-form-select name = "location"
                             v-model="location"
