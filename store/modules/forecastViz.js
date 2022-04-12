@@ -42,9 +42,8 @@ export default (moduleOptions) => ({
   mutations: {
     async set_target_var (state, new_target_var) {
       state.target_var = new_target_var
-      await this.dispatch('forecastViz/fetch_current_truth')
-      await this.dispatch('forecastViz/fetch_as_of_truth')
-      await this.dispatch('forecastViz/fetch_forecasts')
+      await Promise.all([this.dispatch('forecastViz/fetch_current_truth'), 
+                          this.dispatch('forecastViz/fetch_as_of_truth'), this.dispatch('forecastViz/fetch_forecasts')])
       if (state.all_models === true) {
         await this.dispatch('forecastViz/update_models')
       }
@@ -54,9 +53,8 @@ export default (moduleOptions) => ({
     },
     async set_location (state, new_location) {
       state.location = new_location
-      await this.dispatch('forecastViz/fetch_current_truth')
-      await this.dispatch('forecastViz/fetch_as_of_truth')
-      await this.dispatch('forecastViz/fetch_forecasts')
+      await Promise.all([this.dispatch('forecastViz/fetch_current_truth'), 
+                          this.dispatch('forecastViz/fetch_as_of_truth'), this.dispatch('forecastViz/fetch_forecasts')])
       if (state.all_models === true) {
         await this.dispatch('forecastViz/update_models')
       }
@@ -75,8 +73,7 @@ export default (moduleOptions) => ({
         state.as_of_date =
           state.available_as_ofs[state.target_var][as_of_index + 1]
       }
-      await this.dispatch('forecastViz/fetch_as_of_truth')
-      await this.dispatch('forecastViz/fetch_forecasts')
+      await Promise.all([this.dispatch('forecastViz/fetch_as_of_truth'), this.dispatch('forecastViz/fetch_forecasts')])
       state.as_of_truth = state.temp_as_of_truth
       state.forecasts = state.temp_forecasts
     },
@@ -88,8 +85,7 @@ export default (moduleOptions) => ({
         state.as_of_date =
           state.available_as_ofs[state.target_var][as_of_index - 1]
       }
-      await this.dispatch('forecastViz/fetch_as_of_truth')
-      await this.dispatch('forecastViz/fetch_forecasts')
+      await Promise.all([this.dispatch('forecastViz/fetch_as_of_truth'), this.dispatch('forecastViz/fetch_forecasts')])
       state.as_of_truth = state.temp_as_of_truth
       state.forecasts = state.temp_forecasts
     },
