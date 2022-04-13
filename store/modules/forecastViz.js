@@ -136,13 +136,18 @@ export default (moduleOptions) => ({
   actions: {
     async fetch_current_truth ({ commit, state }) {
       try {
+        let target_var = state.target_var
+        let location = state.location
+        let current_date = state.current_date
         const data = await this.dispatch('forecastViz_fetch_data', {
           is_forecast: false,
           target_var: state.target_var,
           location: state.location,
           ref_date: state.current_date
         })
-        commit('set_temp_current_truth', data)
+        if (target_var === state.target_var && location===state.location && current_date===state.current_date){
+          commit('set_temp_current_truth', data);
+          }
       } catch (error) {
         commit('set_temp_current_truth', [])
         console.log(error)
@@ -150,13 +155,18 @@ export default (moduleOptions) => ({
     },
     async fetch_as_of_truth ({ commit, state }) {
       try {
+        let target_var = state.target_var
+        let location = state.location
+        let as_of_date = state.as_of_date
         const data = await this.dispatch('forecastViz_fetch_data', {
           is_forecast: false,
           target_var: state.target_var,
           location: state.location,
           ref_date: state.as_of_date
         })
-        commit('set_temp_as_of_truth', data)
+        if (target_var === state.target_var && location===state.location && as_of_date===state.as_of_date){
+          commit('set_temp_as_of_truth', data);
+          }
       } catch (error) {
         commit('set_temp_as_of_truth', [])
         console.log(error)
@@ -164,13 +174,18 @@ export default (moduleOptions) => ({
     },
     async fetch_forecasts ({ commit, state }) {
       try {
+        let target_var = state.target_var
+        let location = state.location
+        let as_of_date = state.as_of_date
         const data = await this.dispatch('forecastViz_fetch_data', {
           is_forecast: true,
           target_var: state.target_var,
           location: state.location,
           ref_date: state.as_of_date
         })
-        commit('set_temp_forecasts', data)
+        if (target_var === state.target_var && location===state.location && as_of_date===state.as_of_date){
+          commit('set_temp_forecasts', data);
+          }
       } catch (error) {
         commit('set_temp_forecasts', {})
         console.log(error)
