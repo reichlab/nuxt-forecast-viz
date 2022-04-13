@@ -18,7 +18,7 @@ export default (moduleOptions) => ({
     models: moduleOptions.models,
     current_models: moduleOptions.default_models,
     default_models: moduleOptions.default_models,
-    data: ['Current Truth', 'Truth As Of'],
+    data: ['Current Truth', 'Truth as of'],
     colours: Array(parseInt(moduleOptions.models.length / 10, 10) + 1)
       .fill([
         '#0d0887',
@@ -275,7 +275,7 @@ export default (moduleOptions) => ({
           }
         })
       }
-      if (state.data.includes('Truth As Of')) {
+      if (state.data.includes('Truth as of')) {
         pd.push({
           x: state.as_of_truth.date,
           y: state.as_of_truth.y,
