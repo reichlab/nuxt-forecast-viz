@@ -35,9 +35,9 @@
 
           <label for = "data">Select Truth Data:</label>
           <div class="form-group form-check forecastViz_select_data ">
-            <input type="checkbox" id="forecastViz_Current_Truth" value="Current Truth" checked @click="handle_data('Current Truth',0)" >&nbsp; Current ({{current_date}}) &nbsp;<span class="forecastViz_dot" style="background-color: lightgrey; "></span>&nbsp;&nbsp;&nbsp;
+            <input type="checkbox" id="forecastViz_Current_Truth" value="Current Truth" checked @click="handle_data('forecastViz_Current_Truth')" >&nbsp; Current ({{current_date}}) &nbsp;<span class="forecastViz_dot" style="background-color: lightgrey; "></span>&nbsp;&nbsp;&nbsp;
             <br>
-            <input type="checkbox" id="forecastViz_Truth_as_Of" value="Truth as Of" checked @click="handle_data('Truth as Of',1)">&nbsp; As of {{as_of_date}}&nbsp;<span class="forecastViz_dot" style="background-color: black;"></span>
+            <input type="checkbox" id="forecastViz_Truth_as_of" value="Truth as of" checked @click="handle_data('forecastViz_Truth_as_of')">&nbsp; As of {{as_of_date}}&nbsp;<span class="forecastViz_dot" style="background-color: black;"></span>
           </div>
           <button type="button" class="btn xwwbtn-outline-dark btn-sm rounded-pill" style="float: right;" @click="shuffle_colours()">Shuffle Colours</button>
           <label class="forecastViz_label" for = "model">Select Models:</label>
@@ -72,11 +72,11 @@
             <vue-plotly :data="plot_data" :layout="plot_layout" :style="plot_style"></vue-plotly>
           </client-only>
           <div class="container">
-        <div class="col-md-12 text-center">
-            <button type="button" class="btn btn-primary" @click="key_press(0)">&lt;</button>
-            <button type="button" class="btn btn-primary" @click="key_press(1)">&gt;</button>
-        </div>
-    </div>
+            <div class="col-md-12 text-center">
+                <button type="button" class="btn btn-primary" @click="key_press(0)">&lt;</button>
+                <button type="button" class="btn btn-primary" @click="key_press(1)">&gt;</button>
+            </div>
+          </div>
           <p style="text-align:center">
             <small>Note: You can navigate to forecasts from previous weeks with the left and right arrow keys</small>
           </p>
@@ -88,13 +88,8 @@
 
 
 <script>
-// import { Plotly } from 'vue-plotly'
-// import embed from vega-embed
 
 export default {
-  // components: {
-  //   Plotly
-  // },
   data() {
     return {
       plot_style: {
@@ -195,7 +190,7 @@ export default {
       }
     },
     select_all_models() {
-      var checkbox = document.getElementById("all");
+      var checkbox = document.getElementById("forecastViz_all");
       if (checkbox.checked === true) {
         this.$forecastViz.select_all_models()
       } else {
@@ -203,14 +198,12 @@ export default {
       }
       this.$forceUpdate()
     },
-    handle_data(item,index) {
+    handle_data(item) {
       var checkbox = document.getElementById(item);
-      if (checkbox.checked != true)
-      {
-        this.$forecastViz.remove_from_data(item)
-      }
-      else{
-        this.$forecastViz.add_to_data(item)
+      if (checkbox.checked != true) {
+        this.$forecastViz.remove_from_data(checkbox.value)
+      } else {
+        this.$forecastViz.add_to_data(checkbox.value)
       }
     }
   },

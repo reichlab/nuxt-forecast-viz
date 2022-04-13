@@ -18,7 +18,7 @@ export default (moduleOptions) => ({
     models: moduleOptions.models,
     current_models: moduleOptions.default_models,
     default_models: moduleOptions.default_models,
-    data: ['Current Truth', 'Truth As Of'],
+    data: ['Current Truth', 'Truth as of'],
     colours: Array(parseInt(moduleOptions.models.length / 10, 10) + 1)
       .fill([
         '#0d0887',
@@ -42,9 +42,8 @@ export default (moduleOptions) => ({
   mutations: {
     async set_target_var (state, new_target_var) {
       state.target_var = new_target_var
-      await this.dispatch('forecastViz/fetch_current_truth')
-      await this.dispatch('forecastViz/fetch_as_of_truth')
-      await this.dispatch('forecastViz/fetch_forecasts')
+      await Promise.all([this.dispatch('forecastViz/fetch_current_truth'), 
+                          this.dispatch('forecastViz/fetch_as_of_truth'), this.dispatch('forecastViz/fetch_forecasts')])
       if (state.all_models === true) {
         await this.dispatch('forecastViz/update_models')
       }
@@ -54,9 +53,8 @@ export default (moduleOptions) => ({
     },
     async set_location (state, new_location) {
       state.location = new_location
-      await this.dispatch('forecastViz/fetch_current_truth')
-      await this.dispatch('forecastViz/fetch_as_of_truth')
-      await this.dispatch('forecastViz/fetch_forecasts')
+      await Promise.all([this.dispatch('forecastViz/fetch_current_truth'), 
+                          this.dispatch('forecastViz/fetch_as_of_truth'), this.dispatch('forecastViz/fetch_forecasts')])
       if (state.all_models === true) {
         await this.dispatch('forecastViz/update_models')
       }
@@ -75,8 +73,7 @@ export default (moduleOptions) => ({
         state.as_of_date =
           state.available_as_ofs[state.target_var][as_of_index + 1]
       }
-      await this.dispatch('forecastViz/fetch_as_of_truth')
-      await this.dispatch('forecastViz/fetch_forecasts')
+      await Promise.all([this.dispatch('forecastViz/fetch_as_of_truth'), this.dispatch('forecastViz/fetch_forecasts')])
       state.as_of_truth = state.temp_as_of_truth
       state.forecasts = state.temp_forecasts
     },
@@ -88,8 +85,7 @@ export default (moduleOptions) => ({
         state.as_of_date =
           state.available_as_ofs[state.target_var][as_of_index - 1]
       }
-      await this.dispatch('forecastViz/fetch_as_of_truth')
-      await this.dispatch('forecastViz/fetch_forecasts')
+      await Promise.all([this.dispatch('forecastViz/fetch_as_of_truth'), this.dispatch('forecastViz/fetch_forecasts')])
       state.as_of_truth = state.temp_as_of_truth
       state.forecasts = state.temp_forecasts
     },
@@ -140,13 +136,18 @@ export default (moduleOptions) => ({
   actions: {
     async fetch_current_truth ({ commit, state }) {
       try {
+        let target_var = state.target_var
+        let location = state.location
+        let current_date = state.current_date
         const data = await this.dispatch('forecastViz_fetch_data', {
           is_forecast: false,
           target_var: state.target_var,
           location: state.location,
           ref_date: state.current_date
         })
-        commit('set_temp_current_truth', data)
+        if (target_var === state.target_var && location===state.location && current_date===state.current_date){
+          commit('set_temp_current_truth', data);
+          }
       } catch (error) {
         commit('set_temp_current_truth', [])
         console.log(error)
@@ -154,13 +155,18 @@ export default (moduleOptions) => ({
     },
     async fetch_as_of_truth ({ commit, state }) {
       try {
+        let target_var = state.target_var
+        let location = state.location
+        let as_of_date = state.as_of_date
         const data = await this.dispatch('forecastViz_fetch_data', {
           is_forecast: false,
           target_var: state.target_var,
           location: state.location,
           ref_date: state.as_of_date
         })
-        commit('set_temp_as_of_truth', data)
+        if (target_var === state.target_var && location===state.location && as_of_date===state.as_of_date){
+          commit('set_temp_as_of_truth', data);
+          }
       } catch (error) {
         commit('set_temp_as_of_truth', [])
         console.log(error)
@@ -168,13 +174,18 @@ export default (moduleOptions) => ({
     },
     async fetch_forecasts ({ commit, state }) {
       try {
+        let target_var = state.target_var
+        let location = state.location
+        let as_of_date = state.as_of_date
         const data = await this.dispatch('forecastViz_fetch_data', {
           is_forecast: true,
           target_var: state.target_var,
           location: state.location,
           ref_date: state.as_of_date
         })
-        commit('set_temp_forecasts', data)
+        if (target_var === state.target_var && location===state.location && as_of_date===state.as_of_date){
+          commit('set_temp_forecasts', data);
+          }
       } catch (error) {
         commit('set_temp_forecasts', {})
         console.log(error)
@@ -279,7 +290,7 @@ export default (moduleOptions) => ({
           }
         })
       }
-      if (state.data.includes('Truth As Of') && state.as_of_truth.length>0) {
+      if (state.data.includes('Truth as of') && state.as_of_truth.length>0) {
         pd.push({
           x: state.as_of_truth.date,
           y: state.as_of_truth.y,
