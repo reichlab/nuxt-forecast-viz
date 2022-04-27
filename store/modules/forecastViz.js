@@ -18,7 +18,7 @@ export default (moduleOptions) => ({
     models: [],
     current_models: [],
     default_models: [],
-    data: ['Current Truth', 'Truth As Of'],
+    data: ['Current Truth', 'Truth as of'],
     colours: [],
     all_models: false,
     disclaimer: '',
@@ -146,6 +146,7 @@ export default (moduleOptions) => ({
         '#fdca26',
         '#f0f921'
       ]).flat()
+      state.all_models = options.all_models
       state.disclaimer = options.disclaimer
       console.log('xx2 target variables:', state.target_variables)
     }
