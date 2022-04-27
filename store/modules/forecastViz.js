@@ -277,8 +277,8 @@ export default (moduleOptions) => ({
     },
     plot_data: (state) => {
       let pd = []
-
-      if (state.data.includes('Current Truth')) {
+      console.log(state.current_truth, state.as_of_truth, state.forecasts)
+      if (state.data.includes('Current Truth') && Object.keys(state.current_truth).length != 0) {
         pd.push({
           x: state.current_truth.date,
           y: state.current_truth.y,
@@ -290,7 +290,7 @@ export default (moduleOptions) => ({
           }
         })
       }
-      if (state.data.includes('Truth as of')) {
+      if (state.data.includes('Truth As Of') && Object.keys(state.as_of_truth).length != 0) {
         pd.push({
           x: state.as_of_truth.date,
           y: state.as_of_truth.y,
@@ -303,7 +303,9 @@ export default (moduleOptions) => ({
           }
         })
       }
-      const pd0 = Object.keys(state.forecasts).map((model) => {
+      let pd0 = []
+      if(state.forecasts.length!=0){
+       pd0 = Object.keys(state.forecasts).map((model) => {
         if (state.current_models.includes(model)) {
           const index = state.models.indexOf(model)
           const model_forecasts = state.forecasts[model]
@@ -361,9 +363,12 @@ export default (moduleOptions) => ({
         }
         return []
       })
-
+    }
       pd = pd.concat(...pd0)
-      const pd1 = Object.keys(state.forecasts).map((model) => {
+      let pd1 = []
+      if(state.forecasts.length !=0){
+        
+       pd1 = Object.keys(state.forecasts).map((model) => {
         if (state.current_models.includes(model)) {
           const index = state.models.indexOf(model)
           const is_hosp = state.target_var === 'hosp'
@@ -421,6 +426,7 @@ export default (moduleOptions) => ({
         }
         return []
       })
+    }
       pd = pd.concat(...pd1)
       return pd
     }
