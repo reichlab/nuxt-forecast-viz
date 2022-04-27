@@ -3,38 +3,25 @@ import moment from 'moment'
 export default (moduleOptions) => ({
   namespaced: true,
   state: () => ({
-    target_variables: moduleOptions.target_variables,
-    target_var: moduleOptions.init_target_var,
-    locations: moduleOptions.locations,
-    location: moduleOptions.init_location,
-    intervals: moduleOptions.intervals,
-    interval: moduleOptions.init_interval,
-    available_as_ofs: moduleOptions.available_as_ofs,
-    as_of_date: moduleOptions.init_as_of_date,
+    target_variables: [],
+    target_var: '',
+    locations: [],
+    location: '',
+    intervals: [],
+    interval: '',
+    available_as_ofs: [],
+    as_of_date: '',
     as_of_truth: [],
-    current_date: moduleOptions.current_date,
+    current_date: '',
     current_truth: [],
     forecasts: {},
-    models: moduleOptions.models,
-    current_models: moduleOptions.default_models,
-    default_models: moduleOptions.default_models,
+    models: [],
+    current_models: [],
+    default_models: [],
     data: ['Current Truth', 'Truth as of'],
-    colours: Array(parseInt(moduleOptions.models.length / 10, 10) + 1)
-      .fill([
-        '#0d0887',
-        '#46039f',
-        '#7201a8',
-        '#9c179e',
-        '#bd3786',
-        '#d8576b',
-        '#ed7953',
-        '#fb9f3a',
-        '#fdca26',
-        '#f0f921'
-      ])
-      .flat(),
-    all_models: moduleOptions.all_models,
-    disclaimer: moduleOptions.disclaimer,
+    colours: [],
+    all_models: false,
+    disclaimer: '',
     temp_current_truth: [],
     temp_as_of_truth: [],
     temp_forecasts: {}
@@ -100,6 +87,7 @@ export default (moduleOptions) => ({
     },
     set_current_current_truth (state, new_truth) {
       state.current_truth = new_truth
+      console.log('xx2 set_current_current_truth() called with current_truth', state.current_truth)
     },
     set_current_as_of_truth (state, new_truth) {
       state.as_of_truth = new_truth
@@ -131,7 +119,38 @@ export default (moduleOptions) => ({
     unselect_all_models (state) {
       state.current_models = state.default_models
       state.all_models = false
+    },
+    set_options(state, options){
+      console.log('xx2 set_options() called with options:', options)
+      state.target_variables = options.target_variables
+      state.target_var = options.init_target_var
+      state.locations = options.locations
+      state.location = options.init_location
+      state.intervals = options.intervals
+      state.interval = options.init_interval
+      state.available_as_ofs = options.available_as_ofs
+      state.as_of_date = options.init_as_of_date
+      state.current_date = options.current_date
+      state.models = options.models
+      state.current_models = options.default_models
+      state.default_models = options.default_models
+      state.colours = Array(parseInt(options.models.length / 10, 10) + 1).fill([
+        '#0d0887',
+        '#46039f',
+        '#7201a8',
+        '#9c179e',
+        '#bd3786',
+        '#d8576b',
+        '#ed7953',
+        '#fb9f3a',
+        '#fdca26',
+        '#f0f921'
+      ]).flat()
+      state.all_models = options.all_models
+      state.disclaimer = options.disclaimer
+      console.log('xx2 target variables:', state.target_variables)
     }
+
   },
   actions: {
     async fetch_current_truth ({ commit, state }) {
@@ -255,6 +274,12 @@ export default (moduleOptions) => ({
     all_models: (state) => state.all_models,
     plot_layout: (state) => {
       // eslint-disable-next-line max-len
+      if (state.target_variables.length==0){
+        // handle the case where options haven't been set by set_options()
+        console.log('plot_layout() empty target variable')
+        return {}
+      }
+      console.log('plot_layout() non empty target variable')
       const variable = state.target_variables.filter(
         (obj) => obj.value === state.target_var
       )[0].plot_text
@@ -277,7 +302,12 @@ export default (moduleOptions) => ({
     },
     plot_data: (state) => {
       let pd = []
-
+      if (state.target_variables.length==0){
+        // handle the case where options haven't been set by set_options()
+        console.log('plot_data() empty target variable')
+        return []
+      }
+      console.log('plot_data() non empty target variable')
       if (state.data.includes('Current Truth')) {
         pd.push({
           x: state.current_truth.date,
