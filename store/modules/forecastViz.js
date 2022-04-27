@@ -290,7 +290,7 @@ export default (moduleOptions) => ({
           }
         })
       }
-      if (state.data.includes('Truth As Of') && Object.keys(state.as_of_truth).length != 0) {
+      if (state.data.includes('Truth as of') && Object.keys(state.as_of_truth).length != 0) {
         pd.push({
           x: state.as_of_truth.date,
           y: state.as_of_truth.y,
