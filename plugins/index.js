@@ -286,14 +286,16 @@ class ForecastViz {
     // handle no store:
     if (!this.storeModuleExists()) return undefined
     // adjust the data value using a store mutation
+
     let options = await this.store.dispatch('forecastViz_options');
     console.log('xx2 init() calling set_options', options)
     this.store.commit('forecastViz/set_options', options)
-    console.log('xx2 init() called set_options')
-    await this.store.dispatch('forecastViz/first_fetch_current_truth');
-    await this.store.dispatch('forecastViz/first_fetch_as_of_truth');
-    await this.store.dispatch('forecastViz/first_fetch_forecasts');
-   
+    console.log('xx2 init() called set_options')  
+    await Promise.all([
+      this.store.dispatch('forecastViz/first_fetch_current_truth'),
+      this.store.dispatch('forecastViz/first_fetch_as_of_truth'),
+      this.store.dispatch('forecastViz/first_fetch_forecasts')
+    ])
   }
 }
 
