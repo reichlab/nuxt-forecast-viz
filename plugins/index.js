@@ -290,12 +290,21 @@ class ForecastViz {
     let options = await this.store.dispatch('forecastViz_options');
     console.log('xx2 init() calling set_options', options)
     this.store.commit('forecastViz/set_options', options)
-    console.log('xx2 init() called set_options')  
+    console.log('xx2 init() called set_options')
     await Promise.all([
-      this.store.dispatch('forecastViz/first_fetch_current_truth'),
-      this.store.dispatch('forecastViz/first_fetch_as_of_truth'),
-      this.store.dispatch('forecastViz/first_fetch_forecasts')
-    ])
+      this.store.dispatch('forecastViz/fetch_current_truth'),
+      this.store.dispatch('forecastViz/fetch_as_of_truth'),
+      this.store.dispatch('forecastViz/fetch_forecasts')])
+    console.log('store in init', this.store)
+    this.store.$forecastViz.state.forecastViz.current_truth = this.store.$forecastViz.state.forecastViz.temp_current_truth
+    this.store.$forecastViz.state.forecastViz.as_of_truth = this.store.$forecastViz.state.forecastViz.temp_as_of_truth
+    this.store.$forecastViz.state.forecastViz.forecasts = this.store.$forecastViz.state.forecastViz.temp_forecasts
+
+    // await Promise.all([
+    //   this.store.dispatch('forecastViz/first_fetch_current_truth'),
+    //   this.store.dispatch('forecastViz/first_fetch_as_of_truth'),
+    //   this.store.dispatch('forecastViz/first_fetch_forecasts')
+    // ])
   }
 }
 
