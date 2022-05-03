@@ -87,7 +87,6 @@ export default (moduleOptions) => ({
     },
     set_current_current_truth (state, new_truth) {
       state.current_truth = new_truth
-      console.log('xx2 set_current_current_truth() called with current_truth', state.current_truth)
     },
     set_current_as_of_truth (state, new_truth) {
       state.as_of_truth = new_truth
@@ -121,7 +120,6 @@ export default (moduleOptions) => ({
       state.all_models = false
     },
     set_options(state, options){
-      console.log('xx2 set_options() called with options:', options)
       state.target_variables = options.target_variables
       state.target_var = options.init_target_var
       state.locations = options.locations
@@ -148,7 +146,6 @@ export default (moduleOptions) => ({
       ]).flat()
       state.all_models = options.all_models
       state.disclaimer = options.disclaimer
-      console.log('xx2 target variables:', state.target_variables)
     }
 
   },
