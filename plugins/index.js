@@ -282,20 +282,16 @@ class ForecastViz {
 
   // function to fetch initial data
   async init () {
-    console.log('xx2 init() called')
     // handle no store:
     if (!this.storeModuleExists()) return undefined
     // adjust the data value using a store mutation
 
     let options = await this.store.dispatch('forecastViz_options');
-    console.log('xx2 init() calling set_options', options)
     this.store.commit('forecastViz/set_options', options)
-    console.log('xx2 init() called set_options')
     await Promise.all([
       this.store.dispatch('forecastViz/fetch_current_truth'),
       this.store.dispatch('forecastViz/fetch_as_of_truth'),
       this.store.dispatch('forecastViz/fetch_forecasts')])
-    console.log('store in init', this.store)
     this.store.$forecastViz.state.forecastViz.current_truth = this.store.$forecastViz.state.forecastViz.temp_current_truth
     this.store.$forecastViz.state.forecastViz.as_of_truth = this.store.$forecastViz.state.forecastViz.temp_as_of_truth
     this.store.$forecastViz.state.forecastViz.forecasts = this.store.$forecastViz.state.forecastViz.temp_forecasts
@@ -311,9 +307,7 @@ class ForecastViz {
 // create the plugin
 export default ({ store }, inject) => {
   // get options
-  console.log('xx2 default() \n')
   const options = JSON.parse(`<%= JSON.stringify(options) %>`)
-  console.log('xx2 Options:', options)
 
   // get a reference to the vuex store's state
   const { state } = store
