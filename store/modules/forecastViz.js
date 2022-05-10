@@ -109,7 +109,11 @@ export default (moduleOptions) => ({
       state.data.splice(index, 1)
     },
     shuffle_colours (state) {
-      state.colours = state.colours.sort(() => 0.5 - Math.random())
+      let p1 = ar.slice(0,10);
+      let p2 = ar.slice(10);   
+      p2 = p2.sort(() => 0.5 - Math.random())
+      state.colours = p1.concat(p2)
+
     },
     select_all_models (state) {
       state.current_models = Object.keys(state.forecasts).map((model) => model)
