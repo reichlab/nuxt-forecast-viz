@@ -274,7 +274,7 @@ html,body
 
 #forecastViz_options {
   background: #fff;
-  padding: 5px;
+  margin: 2%;
 }
 
 select{
@@ -303,7 +303,7 @@ label{
   border-radius: 5px;
 }
 
-/* Extra small devices (phones, 600px and down) */
+/* small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
   html,body
   {
@@ -321,18 +321,6 @@ label{
     margin: 2%;
   }
 }
-
-/* Small devices (portrait tablets and large phones, 300px and up) */
-@media only screen and (min-width: 300px) {
-  html,body
-  {
-      width: 100%;
-      height: 100%;
-      margin: 2%;
-      padding: 2%;
-      overflow-x: hidden !important; 
-  }
-}
 /* Medium devices (ipads, 768px and up) */
 @media only screen and (min-width: 768px) {
   html,body
@@ -342,9 +330,6 @@ label{
       margin: 0px;
       padding: 0px;
       overflow-x: hidden !important; 
-  }
-  #forecastViz_vizualisation {
-    margin: 2%;
   }
 } 
 /* Large devices (laptops/desktops, 992px and up) */
