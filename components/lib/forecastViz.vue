@@ -274,7 +274,6 @@ html,body
 
 #forecastViz_options {
   background: #fff;
-  margin: 2%;
 }
 
 select{
@@ -320,6 +319,9 @@ label{
   .forecastViz_disclaimer{
     margin: 2%;
   }
+  #forecastViz_options {
+  margin: 2%;
+}
 }
 /* Medium devices (ipads, 768px and up) */
 @media only screen and (min-width: 768px) {
