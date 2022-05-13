@@ -109,10 +109,20 @@ export default (moduleOptions) => ({
       state.data.splice(index, 1)
     },
     shuffle_colours (state) {
-      let p1 = ar.slice(0,10);
-      let p2 = ar.slice(10);   
-      p2 = p2.sort(() => 0.5 - Math.random())
-      state.colours = p1.concat(p2)
+      let p1 = []
+      let p2 = []
+      for(let i=0; i<state.colours.length;i+=10){
+        if(state.colours.length - i < 10){
+          p2 = state.colours.slice(i, );  
+        }
+        else{
+        p2 = state.colours.slice(i, i+10 );   
+        }
+        p2 = p2.sort(() => 0.5 - Math.random())
+        p1  = p1.concat(p2)
+
+      }
+      state.colours = p1
 
     },
     select_all_models (state) {
