@@ -24,7 +24,17 @@ export default (moduleOptions) => ({
     disclaimer: '',
     temp_current_truth: [],
     temp_as_of_truth: [],
-    temp_forecasts: {}
+    temp_forecasts: {},
+    all_colours :[ '#0d0887',
+    '#46039f',
+    '#7201a8',
+    '#9c179e',
+    '#bd3786',
+    '#d8576b',
+    '#ed7953',
+    '#fb9f3a',
+    '#fdca26',
+    '#f0f921']
   }),
   mutations: {
     async set_target_var (state, new_target_var) {
@@ -109,7 +119,14 @@ export default (moduleOptions) => ({
       state.data.splice(index, 1)
     },
     shuffle_colours (state) {
-      state.colours = state.colours.sort(() => 0.5 - Math.random())
+      let p1 = []
+      for(let i=0; i<state.colours.length;i+=10){
+        state.all_colours = state.all_colours.sort(() => 0.5 - Math.random())
+        p1  = p1.concat(state.all_colours)
+
+      }
+      state.colours = p1
+
     },
     select_all_models (state) {
       state.current_models = Object.keys(state.forecasts).map((model) => model)
