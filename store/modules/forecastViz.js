@@ -273,10 +273,8 @@ export default (moduleOptions) => ({
       // eslint-disable-next-line max-len
       if (state.target_variables.length==0){
         // handle the case where options haven't been set by set_options()
-        console.log('plot_layout() empty target variable')
         return {}
       }
-      console.log('plot_layout() non empty target variable')
       const variable = state.target_variables.filter(
         (obj) => obj.value === state.target_var
       )[0].plot_text
@@ -303,13 +301,10 @@ export default (moduleOptions) => ({
     },
     plot_data: (state) => {
       let pd = []
-      console.log(state.current_truth, state.as_of_truth, state.forecasts)
       if (state.target_variables.length==0){
         // handle the case where options haven't been set by set_options()
-        console.log('plot_data() empty target variable')
         return []
       }
-      console.log('plot_data() non empty target variable')
      if (state.data.includes('Current Truth') && Object.keys(state.current_truth).length != 0) {
         pd.push({
           x: state.current_truth.date,
