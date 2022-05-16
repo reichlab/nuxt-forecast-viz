@@ -287,7 +287,11 @@ export default (moduleOptions) => ({
         autosize: true,
         showlegend: false,
         title: {
-          text: `Forecasts of ${variable} in ${location} as of ${state.as_of_date}`
+          text: `Forecasts of ${variable} <br> in ${location} as of ${state.as_of_date}`,
+          x: 0.5,
+          y: 0.90,
+          xanchor: 'center',
+          yanchor: 'top',
         },
         xaxis: {
           title: { text: 'Date' }

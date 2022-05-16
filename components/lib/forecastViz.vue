@@ -2,7 +2,7 @@
   <div id="forecastViz_vizualisation">
     <div id="forecastViz_vizualizations" class="container-fluid">
       <div class = "row">
-        <div id="forecastViz_options" class="col-md-3">
+        <div id="forecastViz_options" class="col-sm-12 col-md-3">
           <form>
             <div class="row forecastViz_var">
               <label for = "target_variable" class="col-md-5">Outcome:</label>
@@ -64,11 +64,11 @@
           </div>
         </div>
 
-        <div id="forecastViz_viz" class="col-md-9">
+        <div id="forecastViz_viz" class="col-sm-12 col-md-9">
           <p class="forecastViz_disclaimer" >
             <b>{{disclaimer}}</b>
           </p>
-          <client-only>
+          <client-only class="col-sm-12 col-md-12">
             <vue-plotly :data="plot_data" :layout="plot_layout" :style="plot_style"></vue-plotly>
           </client-only>
           <div class="container">
@@ -219,6 +219,15 @@ export default {
 
 <style>
 
+html,body
+{
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden !important; 
+}
+
 #forecastViz_vizualisation {
   width: 100% !important;
   margin: 0;
@@ -230,10 +239,6 @@ export default {
   border-radius: 50%;
   border: 1px solid black;
   display: inline-block;
-}
-
-html,body{
-    overflow-x: hidden !important;
 }
 
 .forecastViz_disclaimer{
@@ -269,7 +274,6 @@ html,body{
 
 #forecastViz_options {
   background: #fff;
-  padding: 5px;
 }
 
 select{
@@ -286,6 +290,7 @@ label{
 }
 
 /* Track */
+
 ::-webkit-scrollbar-track {
   box-shadow: inset 0 0 5px grey;
   border-radius: 10px;
@@ -296,5 +301,49 @@ label{
   background: grey;
   border-radius: 5px;
 }
+
+/* small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  html,body
+  {
+      width: 100%;
+      height: 100%;
+      margin: 0px;
+      padding: 0px;
+      overflow-x: hidden !important; 
+  }
+  .forecastViz_select_data{
+    margin: 2%;
+  }
+
+  .forecastViz_disclaimer{
+    margin: 2%;
+  }
+  #forecastViz_options {
+  margin: 2%;
+}
+}
+/* Medium devices (ipads, 768px and up) */
+@media only screen and (min-width: 768px) {
+  html,body
+  {
+      width: 100%;
+      height: 100%;
+      margin: 0px;
+      padding: 0px;
+      overflow-x: hidden !important; 
+  }
+} 
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  html,body
+  {
+      width: 100%;
+      height: 100%;
+      margin: 0px;
+      padding: 0px;
+      overflow-x: hidden !important; 
+  }
+} 
 
 </style>
