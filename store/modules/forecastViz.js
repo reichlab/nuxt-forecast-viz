@@ -24,7 +24,17 @@ export default (moduleOptions) => ({
     disclaimer: '',
     temp_current_truth: [],
     temp_as_of_truth: [],
-    temp_forecasts: {}
+    temp_forecasts: {},
+    all_colours :[ '#0d0887',
+    '#46039f',
+    '#7201a8',
+    '#9c179e',
+    '#bd3786',
+    '#d8576b',
+    '#ed7953',
+    '#fb9f3a',
+    '#fdca26',
+    '#f0f921']
   }),
   mutations: {
     async set_target_var (state, new_target_var) {
@@ -110,16 +120,9 @@ export default (moduleOptions) => ({
     },
     shuffle_colours (state) {
       let p1 = []
-      let p2 = []
       for(let i=0; i<state.colours.length;i+=10){
-        if(state.colours.length - i < 10){
-          p2 = state.colours.slice(i, );  
-        }
-        else{
-        p2 = state.colours.slice(i, i+10 );   
-        }
-        p2 = p2.sort(() => 0.5 - Math.random())
-        p1  = p1.concat(p2)
+        state.all_colours = state.all_colours.sort(() => 0.5 - Math.random())
+        p1  = p1.concat(state.all_colours)
 
       }
       state.colours = p1
